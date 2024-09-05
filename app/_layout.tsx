@@ -1,7 +1,7 @@
-import { Stack, useRouter } from 'expo-router';
-import React from 'react';
-import { Button } from 'react-native';
-import '../styles/global.css';
+import { Stack, useRouter } from "expo-router";
+import React from "react";
+import { Button } from "react-native";
+import "../styles/global.css";
 
 export default function _layout() {
   const router = useRouter();
@@ -18,40 +18,45 @@ export default function _layout() {
       }
     >
       <Stack.Screen
-        name='index'
+        name="index"
         options={{
-          title: 'Home',
+          title: "Home",
         }}
       />
       <Stack.Screen
-        name='register/index'
+        name="register/index"
         options={{
-          title: 'Register',
+          title: "Register",
           headerRight: () => (
             <Button
-              title='Login'
-              onPress={() => router.push('/login')}
+              title="Login"
+              onPress={() => router.push("/login")}
             ></Button>
           ),
         }}
       />
       <Stack.Screen
-        name='hello'
+        name="register/hello"
         options={{
-          title: 'Hello Modal',
-          presentation: 'modal',
+          title: "Register",
+          headerRight: () => (
+            <Button
+              title="Login"
+              onPress={() => router.push("/login")}
+            ></Button>
+          ),
         }}
       />
       <Stack.Screen
-        name='(tabs)'
+        name="(tabs)"
         options={{
           headerShown: false,
         }}
       />
       <Stack.Screen
-        name='[missing]'
+        name="[missing]"
         options={{
-          title: '404',
+          title: "404",
         }}
       />
     </Stack>
