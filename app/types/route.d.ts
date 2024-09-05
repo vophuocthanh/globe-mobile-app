@@ -1,0 +1,3 @@
+type ParamList = {
+    forgotpassword: undefined;
+};

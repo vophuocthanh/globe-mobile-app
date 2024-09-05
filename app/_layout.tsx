@@ -2,9 +2,14 @@ import { Stack, useRouter } from 'expo-router';
 import React from 'react';
 import { Button } from 'react-native';
 import '../styles/global.css';
+import { useNavigation } from '@react-navigation/native';
+import ForgotPassword from './login/forgotpassword/forgotpassword';
+import { createDrawerNavigator } from '@react-navigation/drawer';
 
 export default function _layout() {
   const router = useRouter();
+  const Drawer = createDrawerNavigator();
+  const navigation = useNavigation();
   // dinh tuyen routing bang Stack
   return (
     <Stack
@@ -31,6 +36,7 @@ export default function _layout() {
             <Button
               title='Login'
               onPress={() => router.push('/login')}
+              //onPress={() => navigation.navigate('/login')}
             ></Button>
           ),
         }}
@@ -43,6 +49,13 @@ export default function _layout() {
         }}
       />
       <Stack.Screen
+        name='login/forgotpassword/forgotpassword'
+        options={{
+          title: '',
+          presentation: 'modal',
+        }}
+      />
+      <Stack.Screen
         name='(tabs)'
         options={{
           headerShown: false,
@@ -51,9 +64,12 @@ export default function _layout() {
       <Stack.Screen
         name='[missing]'
         options={{
-          title: '404',
+          title: 'Login',
         }}
       />
+
     </Stack>
+
+    
   );
 }

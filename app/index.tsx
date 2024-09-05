@@ -7,7 +7,7 @@ export default function Page() {
   return (
     <View className='items-center justify-center flex-1 bg-white'>
       <StatusBar style='light' />
-      <Text className='text-red-500'>Home Page</Text>
+      <Text className='text-red-300'>Home Page</Text>
       <Link href='/register' asChild>
         <Button title='Register' />
       </Link>
