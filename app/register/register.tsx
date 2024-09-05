@@ -6,7 +6,7 @@ import { EyeOff, Eye } from "lucide-react-native";
 
 import { Checkbox } from "react-native-paper";
 
-const Hello: React.FC = () => {
+const RegisterPage2: React.FC = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -119,15 +119,4 @@ const Hello: React.FC = () => {
   );
 };
 
-export default Hello;
-
-
-
-
-
-
-
-
-
-
-
+export default RegisterPage2;
