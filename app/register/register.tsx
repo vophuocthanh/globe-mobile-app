@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Text, TextInput, TouchableOpacity, View } from "react-native";
-import styles from "./styleHello";
+import styles from "./styleRegister";
 import { Link } from "expo-router";
 import { EyeOff, Eye } from "lucide-react-native";
 
