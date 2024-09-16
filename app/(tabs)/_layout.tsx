@@ -1,5 +1,6 @@
 import { Tabs } from 'expo-router';
 import React from 'react';
+import { Icon } from 'react-native-paper';
 
 export default function _layout() {
   return (

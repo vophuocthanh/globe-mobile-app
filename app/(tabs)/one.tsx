@@ -7,7 +7,7 @@ export default function Page() {
   return (
     <View>
       <Text style={{ fontSize: 20 }} className='text-red-500'>
-        This is tab one
+        This is tab one1
       </Text>
       <Button title='Go back' onPress={() => router.back()}></Button>
     </View>

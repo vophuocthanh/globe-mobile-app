@@ -5,6 +5,7 @@ import '../styles/global.css';
 import { useNavigation } from '@react-navigation/native';
 import ForgotPassword from './login/forgotpassword/forgotpassword';
 import { createDrawerNavigator } from '@react-navigation/drawer';
+import Header from './getstart/header/header';
 
 export default function _layout() {
   const router = useRouter();
@@ -22,29 +23,47 @@ export default function _layout() {
         }
       }
     >
-      <Stack.Screen
+      {/* <Stack.Screen
         name='index'
         options={{
-          title: 'Home',
+          presentation: 'modal',
+          title: '',
         }}
-      />
+      /> */}
+      <Stack.Screen
+      
+      name='index'
+      options={{
+        header:  () => <Header />,
+      }}
+    />
       <Stack.Screen
         name='register/index'
         options={{
           title: 'Register',
           headerRight: () => (
+            
             <Button
               title='Login'
-              onPress={() => router.push('/login')}
+              onPress={() => router.push('login/login')}
+              
               //onPress={() => navigation.navigate('/login')}
             ></Button>
           ),
         }}
       />
       <Stack.Screen
+        name='login/login'
+        options={{
+          title: 'Login',
+          presentation: 'modal',
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
         name='hello'
         options={{
-          title: 'Hello Modal',
+          title: 'Hello Modal1',
           presentation: 'modal',
         }}
       />
@@ -53,6 +72,15 @@ export default function _layout() {
         options={{
           title: '',
           presentation: 'modal',
+        }}
+      />
+      
+      <Stack.Screen
+        name='getstart/adventures/adventures'
+        options={{
+          title: 'Hello Modal',
+          presentation: 'modal',
+          headerShown: false,
         }}
       />
       <Stack.Screen
@@ -64,7 +92,7 @@ export default function _layout() {
       <Stack.Screen
         name='[missing]'
         options={{
-          title: 'Login',
+          title: 'not!!!',
         }}
       />
 
