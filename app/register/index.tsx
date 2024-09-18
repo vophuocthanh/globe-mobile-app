@@ -25,7 +25,7 @@ const Register: React.FC = () => {
         <Text style={styles.label}>Phone number</Text>
         <TextInput placeholder="090577666" style={styles.input} />
       </View>
-      <Link href="/register/hello" asChild>
+      <Link href="/register/register" asChild>
         <TouchableOpacity style={styles.button}>
           <Text style={styles.buttonText}>Next</Text>
         </TouchableOpacity>

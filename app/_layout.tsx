@@ -1,4 +1,4 @@
-import { Stack, useRouter } from "expo-router";
+import { Stack, Tabs, useRouter } from "expo-router";
 import React from "react";
 import { Button } from "react-native";
 import "../styles/global.css";
@@ -8,14 +8,12 @@ export default function _layout() {
   // dinh tuyen routing bang Stack
   return (
     <Stack
-      screenOptions={
-        {
-          // headerStyle: {
-          //   backgroundColor: 'black',
-          // },
-          // headerTintColor: 'white',
-        }
-      }
+      screenOptions={{
+        headerStyle: {
+          backgroundColor: "black",
+        },
+        headerTintColor: "white",
+      }}
     >
       <Stack.Screen
         name="index"
@@ -23,6 +21,7 @@ export default function _layout() {
           title: "Home",
         }}
       />
+
       <Stack.Screen
         name="register/index"
         options={{

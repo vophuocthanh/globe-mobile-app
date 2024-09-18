@@ -1,25 +1,38 @@
-import { Tabs } from 'expo-router';
-import React from 'react';
+import { Tabs } from "expo-router";
+import React from "react";
+import { TabBar } from "../components/TabBar";
 
 export default function _layout() {
   return (
-    <Tabs>
+    <Tabs tabBar={(props) => <TabBar {...props} />}>
       <Tabs.Screen
-        name='one'
-        options={{ headerTitle: 'One', tabBarLabel: 'One' }}
+        name="index"
+        options={{ headerTitle: "home", tabBarLabel: "home" }}
       ></Tabs.Screen>
       <Tabs.Screen
-        name='two'
-        options={{ headerTitle: 'Two', tabBarLabel: 'Two' }}
+        name="book"
+        options={{ headerTitle: "book", tabBarLabel: "book" }}
       ></Tabs.Screen>
       <Tabs.Screen
-        name='posts'
+        name="add"
+        options={{ headerTitle: "add", tabBarLabel: "add" }}
+      ></Tabs.Screen>
+      <Tabs.Screen
+        name="like"
+        options={{ headerTitle: "like", tabBarLabel: "like" }}
+      ></Tabs.Screen>
+      <Tabs.Screen
+        name="profile"
+        options={{ headerTitle: "profile", tabBarLabel: "profile" }}
+      ></Tabs.Screen>
+      {/* <Tabs.Screen
+        name="profile"
         options={{
-          headerTitle: 'Posts',
-          tabBarLabel: 'Posts',
+          headerTitle: "profile",
+          tabBarLabel: "profile",
           headerShown: false,
         }}
-      ></Tabs.Screen>
+      ></Tabs.Screen> */}
     </Tabs>
   );
 }
