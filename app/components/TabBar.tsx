@@ -1,9 +1,24 @@
-import { View, Text, TouchableOpacity } from "react-native";
+import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { BottomTabBarProps } from "@react-navigation/bottom-tabs";
+import {
+  House,
+  CalendarCheck2,
+  MapPinPlusInside,
+  User,
+  Heart,
+} from "lucide-react-native";
 
 export function TabBar({ state, descriptors, navigation }: BottomTabBarProps) {
+  const icon: { [key: string]: (props: any) => JSX.Element } = {
+    home: (props: any) => <House name="home" size={20} {...props} />,
+    book: (props: any) => <CalendarCheck2 name="book" size={20} {...props} />,
+    add: (props: any) => <MapPinPlusInside name="add" size={20} {...props} />,
+    like: (props: any) => <Heart name="like" size={20} {...props} />,
+    profile: (props: any) => <User name="profile" size={20} {...props} />,
+  };
+
   return (
-    <View style={{ flexDirection: "row" }}>
+    <View style={styles.tabbar}>
       {state.routes.map((route, index) => {
         const { options } = descriptors[route.key];
         const label =
@@ -34,22 +49,48 @@ export function TabBar({ state, descriptors, navigation }: BottomTabBarProps) {
           });
         };
 
+        const IconComponent =
+          icon[route.name] ||
+          (() => <House size={20} color={isFocused ? "#FF0000" : "black"} />);
+
         return (
           <TouchableOpacity
+            key={route.name}
             accessibilityRole="button"
             accessibilityState={isFocused ? { selected: true } : {}}
             accessibilityLabel={options.tabBarAccessibilityLabel}
             testID={options.tabBarTestID}
             onPress={onPress}
             onLongPress={onLongPress}
-            style={{ flex: 1 }}
+            style={styles.tabBarItem}
           >
-            <Text style={{ color: isFocused ? "#673ab7" : "#222" }}>
+            <IconComponent color={isFocused ? "#FF0000" : "black"} />
+            {/* <Text style={{ color: isFocused ? "#FF0000" : "#222" }}>
               {label}
-            </Text>
+            </Text> */}
           </TouchableOpacity>
         );
       })}
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  tabbar: {
+    position: "absolute",
+    bottom: 10,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    backgroundColor: "#A1B1C3",
+    marginHorizontal: 10,
+    borderRadius: 15,
+    paddingVertical: 15,
+  },
+  tabBarItem: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    gap: 5,
+  },
+});

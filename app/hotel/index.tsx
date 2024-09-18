@@ -84,6 +84,7 @@ const styles = StyleSheet.create({
     gap: 20,
     justifyContent: "center",
     alignItems: "center",
+    marginBottom: 100,
   },
   card: {
     alignItems: "center",

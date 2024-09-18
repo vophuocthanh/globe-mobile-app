@@ -71,8 +71,8 @@ const styles = StyleSheet.create({
   },
   text: {
     position: "absolute",
-    bottom: 50,
-    left: 50,
+    bottom: 10,
+    left: 60,
   },
   title: {
     color: "white",

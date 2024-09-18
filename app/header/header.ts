@@ -43,6 +43,75 @@ const stylesHeader = StyleSheet.create({
   h3:{
   fontSize:20,
 
+  },
+  drawer:{
+      position: "absolute",
+      top: 50,
+      left: 10,
+      width: "55%",
+      height: "204%",
+      backgroundColor: "#D9D9D9",
+      zIndex: 1000,
+      borderRadius:20,
+      
+  },
+  drawerItem: {
+    flexDirection: "row",
+    alignItems: "center",
+    paddingLeft:20,
+    height:40,
+    marginTop:20,
+    borderWidth: 1,         
+    borderColor: "black"
+  },
+  FindTour:{
+   position: "absolute",
+   top:32,
+   left:15 
+  },
+  FindFlight:{
+   position: "absolute",
+   top:34,
+   left:15 
+  },
+  FindStays:{
+   position: "absolute",
+   top:34,
+   left:15 
+  },
+  Advise:{
+    position: "absolute",
+    top:34,
+    left:15 
+  } ,
+  activeItem: {
+    backgroundColor: "#FF5733", 
+    padding: 8,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center"
+  },
+  inactiveItem: {
+    backgroundColor: "white", 
+    padding: 8,
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  LogOut:{
+  position: "absolute",
+  top:32,
+  left:20,
+  paddingLeft:30
+  },
+  avatarDrawer:{
+    position: "absolute",
+    top: 50,
+    right: 10,
+    width: "55%",
+    height: "100%",
+    backgroundColor: "#D9D9D9",
+    zIndex: 1000,
+    borderRadius:20,
   }
  
 });
