@@ -1,16 +1,16 @@
 import React, { useState } from "react";
 import {
-  BedDouble,
+  CalendarArrowUp,
   CircleHelp,
+  Heart,
   LogOut,
   Menu,
-  Plane,
-  Ratio,
+  UserRoundPen,
 } from "lucide-react-native";
 import { View, Text, TouchableOpacity } from "react-native";
 import stylesHeader from "./header";
 import { Avatar, Searchbar, Drawer } from "react-native-paper";
-
+import { useRouter } from "expo-router";
 interface HeaderProps {
   openDrawer: () => void;
 }
@@ -19,13 +19,23 @@ const Header: React.FC<HeaderProps> = () => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [isAvatarDrawerOpen, setIsAvatarDrawerOpen] = useState(false);
   const [active, setActive] = useState("");
-
+  const router = useRouter();
   const toggleDrawer = () => {
     setIsDrawerOpen(!isDrawerOpen);
+    if (!isDrawerOpen) {
+      setIsAvatarDrawerOpen(false);
+    }
   };
+
   const toggleAvatarDrawer = () => {
     setIsAvatarDrawerOpen(!isAvatarDrawerOpen);
-    setIsDrawerOpen(false); // Đảm bảo drawer của menu không mở khi avatar mở
+    if (!isAvatarDrawerOpen) {
+      setIsDrawerOpen(false);
+    }
+  };
+  const handleLogOut = () => {
+    setActive("LogOut");
+    router.push("/login");
   };
   return (
     <View>
@@ -53,9 +63,12 @@ const Header: React.FC<HeaderProps> = () => {
         <Drawer.Section style={stylesHeader.drawer}>
           <View>
             <Drawer.Item
-              label="Find Tour"
+              label="Your Like"
               active={active === "first"}
-              onPress={() => setActive("first")}
+              onPress={() => {
+                setActive("first");
+                router.push("/like");
+              }}
               style={[
                 stylesHeader.drawerItem,
                 active === "first"
@@ -63,13 +76,16 @@ const Header: React.FC<HeaderProps> = () => {
                   : stylesHeader.inactiveItem,
               ]}
             />
-            <Ratio size={16} color="black" style={stylesHeader.FindTour} />
+            <Heart size={16} color="black" style={stylesHeader.like} />
           </View>
           <View>
             <Drawer.Item
-              label="Find Flight"
+              label="Your booking"
               active={active === "second"}
-              onPress={() => setActive("second")}
+              onPress={() => {
+                setActive("second");
+                router.push("/booking");
+              }}
               style={[
                 stylesHeader.drawerItem,
                 active === "second"
@@ -77,10 +93,14 @@ const Header: React.FC<HeaderProps> = () => {
                   : stylesHeader.inactiveItem,
               ]}
             />
-            <Plane size={16} color="black" style={stylesHeader.FindFlight} />
+            <CalendarArrowUp
+              size={16}
+              color="black"
+              style={stylesHeader.booking}
+            />
           </View>
 
-          <View>
+          {/* <View>
             <Drawer.Item
               label="Find Stays"
               active={active === "Third"}
@@ -93,12 +113,15 @@ const Header: React.FC<HeaderProps> = () => {
               ]}
             />
             <BedDouble size={16} color="black" style={stylesHeader.FindStays} />
-          </View>
+          </View> */}
           <View>
             <Drawer.Item
               label="Advise"
               active={active === "Four"}
-              onPress={() => setActive("Four")}
+              onPress={() => {
+                setActive("Four");
+                router.push("/advise");
+              }}
               style={[
                 stylesHeader.drawerItem,
                 active === "Four"
@@ -117,9 +140,9 @@ const Header: React.FC<HeaderProps> = () => {
             <Drawer.Item
               label="LogOut"
               active={active === "LogOut"}
-              onPress={() => setActive("LogOut")}
+              onPress={handleLogOut}
               style={[
-                stylesHeader.drawerItem,
+                stylesHeader.drawerItems,
                 active === "LogOut"
                   ? stylesHeader.activeItem
                   : stylesHeader.inactiveItem,
@@ -129,16 +152,20 @@ const Header: React.FC<HeaderProps> = () => {
           </View>
           <View>
             <Drawer.Item
-              label="Password"
-              active={active === "Password"}
-              onPress={() => setActive("Password")}
+              label="Profile"
+              active={active === "Profile"}
+              onPress={() => {
+                setActive("Profile");
+                router.push("/profile");
+              }}
               style={[
-                stylesHeader.drawerItem,
-                active === "Password"
+                stylesHeader.drawerItems,
+                active === "Profile"
                   ? stylesHeader.activeItem
                   : stylesHeader.inactiveItem,
               ]}
             />
+            <UserRoundPen size={16} color="black" style={stylesHeader.LogOut} />
           </View>
         </Drawer.Section>
       )}

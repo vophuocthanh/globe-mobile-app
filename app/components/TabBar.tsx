@@ -6,14 +6,18 @@ import {
   MapPinPlusInside,
   User,
   Heart,
+  Binoculars,
+  BedDouble,
+  Plane,
 } from "lucide-react-native";
 
 export function TabBar({ state, descriptors, navigation }: BottomTabBarProps) {
   const icon: { [key: string]: (props: any) => JSX.Element } = {
     home: (props: any) => <House name="home" size={20} {...props} />,
-    book: (props: any) => <CalendarCheck2 name="book" size={20} {...props} />,
+    tour: (props: any) => <Binoculars name="tour" size={20} {...props} />,
     add: (props: any) => <MapPinPlusInside name="add" size={20} {...props} />,
-    like: (props: any) => <Heart name="like" size={20} {...props} />,
+    hotel: (props: any) => <BedDouble name="hotel" size={20} {...props} />,
+    flight: (props: any) => <Plane name="flight" size={20} {...props} />,
     profile: (props: any) => <User name="profile" size={20} {...props} />,
   };
 

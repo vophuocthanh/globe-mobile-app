@@ -21,6 +21,18 @@ export default function _layout() {
           title: "Home",
         }}
       />
+      <Stack.Screen
+        name="like"
+        options={{
+          title: "Like",
+        }}
+      />
+      <Stack.Screen
+        name="booking"
+        options={{
+          title: "booking",
+        }}
+      />
 
       <Stack.Screen
         name="register/index"
