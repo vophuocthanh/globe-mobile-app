@@ -14,14 +14,12 @@ export default function _layout() {
   // dinh tuyen routing bang Stack
   return (
     <Stack
-      screenOptions={
-        {
-          // headerStyle: {
-          //   backgroundColor: 'black',
-          // },
-          // headerTintColor: 'white',
-        }
-      }
+      screenOptions={{
+        headerStyle: {
+          backgroundColor: "black",
+        },
+        headerTintColor: "white",
+      }}
     >
       {/* <Stack.Screen
         name='index'
@@ -38,9 +36,9 @@ export default function _layout() {
       }}
     />
       <Stack.Screen
-        name='register/index'
+        name="register/index"
         options={{
-          title: 'Register',
+          title: "Register",
           headerRight: () => (
             
             <Button
@@ -84,13 +82,13 @@ export default function _layout() {
         }}
       />
       <Stack.Screen
-        name='(tabs)'
+        name="(tabs)"
         options={{
           headerShown: false,
         }}
       />
       <Stack.Screen
-        name='[missing]'
+        name="[missing]"
         options={{
           title: 'not!!!',
         }}
