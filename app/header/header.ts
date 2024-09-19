@@ -48,7 +48,7 @@ const stylesHeader = StyleSheet.create({
       position: "absolute",
       top: 50,
       left: 10,
-      width: "55%",
+      width: "60%",
       height: "204%",
       backgroundColor: "#D9D9D9",
       zIndex: 1000,
@@ -62,27 +62,34 @@ const stylesHeader = StyleSheet.create({
     height:40,
     marginTop:20,
     borderWidth: 1,         
-    borderColor: "black"
+    borderColor: "black",
+    width:190,
   },
-  FindTour:{
+  drawerItems: {
+    flexDirection: "row",
+    alignItems: "center",
+    paddingLeft:20,
+    height:40,
+    marginTop:20,
+    borderWidth: 1,         
+    borderColor: "black",
+    width:180,
+  },
+  like:{
    position: "absolute",
    top:32,
-   left:15 
+   left:25 
   },
-  FindFlight:{
+  booking:{
    position: "absolute",
    top:34,
-   left:15 
+   left:25 
   },
-  FindStays:{
-   position: "absolute",
-   top:34,
-   left:15 
-  },
+  
   Advise:{
     position: "absolute",
     top:34,
-    left:15 
+    left:25 
   } ,
   activeItem: {
     backgroundColor: "#FF5733", 

@@ -10,16 +10,20 @@ export default function _layout() {
         options={{ headerTitle: "home", tabBarLabel: "home" }}
       ></Tabs.Screen>
       <Tabs.Screen
-        name="book"
-        options={{ headerTitle: "book", tabBarLabel: "book" }}
+        name="tour"
+        options={{ headerTitle: "tour", tabBarLabel: "tour" }}
       ></Tabs.Screen>
       <Tabs.Screen
         name="add"
         options={{ headerTitle: "add", tabBarLabel: "add" }}
       ></Tabs.Screen>
       <Tabs.Screen
-        name="like"
-        options={{ headerTitle: "like", tabBarLabel: "like" }}
+        name="hotel"
+        options={{ headerTitle: "hotel", tabBarLabel: "hotel" }}
+      ></Tabs.Screen>
+      <Tabs.Screen
+        name="flight"
+        options={{ headerTitle: "flight", tabBarLabel: "flight" }}
       ></Tabs.Screen>
       <Tabs.Screen
         name="profile"

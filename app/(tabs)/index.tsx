@@ -15,7 +15,7 @@ export default function Page() {
     <ScrollView>
       <StatusBar style="light" />
       <View>
-        <Header />
+        <Header openDrawer={() => console.log("Drawer opened")} />
       </View>
       <View className="flex flex-row items-center justify-center">
         <Slider itemList={ImageSLider} />
