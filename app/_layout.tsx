@@ -14,14 +14,12 @@ export default function _layout() {
   // dinh tuyen routing bang Stack
   return (
     <Stack
-      screenOptions={
-        {
-          // headerStyle: {
-          //   backgroundColor: 'black',
-          // },
-          // headerTintColor: 'white',
-        }
-      }
+      screenOptions={{
+        headerStyle: {
+          backgroundColor: "black",
+        },
+        headerTintColor: "white",
+      }}
     >
       {/* <Stack.Screen
         name='index'
