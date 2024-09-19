@@ -6,11 +6,12 @@ import {
   Menu,
   Plane,
   Ratio,
+  CalendarArrowUp,
+  UserRoundPen,
 } from "lucide-react-native";
 import { View, Text, TouchableOpacity } from "react-native";
 import stylesHeader from "./header";
 import { Avatar, Searchbar, Drawer } from "react-native-paper";
-
 interface HeaderProps {
   openDrawer: () => void;
 }
