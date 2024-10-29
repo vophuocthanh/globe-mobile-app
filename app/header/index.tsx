@@ -13,7 +13,7 @@ import { View, Text, TouchableOpacity } from "react-native";
 import stylesHeader from "./header";
 import { Avatar, Searchbar, Drawer } from "react-native-paper";
 interface HeaderProps {
-  openDrawer: () => void;
+  openDrawer?: () => void;
 }
 const Header: React.FC<HeaderProps> = () => {
   const [searchQuery, setSearchQuery] = useState("");
