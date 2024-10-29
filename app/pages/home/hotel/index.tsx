@@ -19,13 +19,13 @@ export default function Hotel() {
   const cardData = [
     {
       id: 1,
-      image: require("../../assets/images/conrad.png"),
+      image: require("../../../../assets/images/quatar.png"),
       hotel: "Conrad",
       country: "Seoul, Korea",
     },
     {
       id: 2,
-      image: require("../../assets/images/safari.png"),
+      image: require("../../../../assets/images/caray.png"),
       hotel: "Madikwe Safari",
       country: "South America",
     },

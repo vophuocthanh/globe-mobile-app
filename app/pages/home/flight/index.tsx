@@ -2,7 +2,7 @@ import { Text, View, TouchableOpacity } from "react-native";
 import React, { useState } from "react";
 import { Card } from "react-native-paper";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
-import styles from './flight'
+import styles from "./flight";
 export default function Flight() {
   const [liked, setLiked] = useState(new Set());
   const handleHeartPress = (id: number) => {
@@ -19,12 +19,12 @@ export default function Flight() {
   const cardData = [
     {
       id: 1,
-      image: require("../../assets/images/caray.png"),
+      image: require("../../../../assets/images/caray.png"),
       flight: "Cathay Pacific",
     },
     {
       id: 2,
-      image: require("../../assets/images/quatar.png"),
+      image: require("../../../../assets/images/quatar.png"),
       flight: "Qatar Airways",
     },
   ];
