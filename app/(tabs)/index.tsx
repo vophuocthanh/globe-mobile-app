@@ -1,14 +1,16 @@
 // import { Link } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import React from "react";
-import { View, ScrollView, Button } from "react-native";
+import { View, ScrollView,  } from "react-native";
 import Header from "../header";
 import Slider from "../Carousel/Slider";
 import { ImageSLider } from "../data/SliderData";
 import Option from "../optionOfYou/index";
-import Flight from "../flight";
-import Hotel from "../hotel";
-import { Link } from "expo-router";
+
+import Hotel from "../pages/home/hotel";
+import Flight from "../pages/home/flight";
+
+
 
 export default function Page() {
   return (

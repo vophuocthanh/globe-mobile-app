@@ -1,5 +1,5 @@
-import { Tabs } from 'expo-router';
-import React from 'react';
+import { Tabs } from "expo-router";
+import React from "react";
 import { TabBar } from "../components/TabBar";
 export default function _layout() {
   return (
@@ -23,6 +23,10 @@ export default function _layout() {
       <Tabs.Screen
         name="profile"
         options={{ headerTitle: "profile", tabBarLabel: "profile" }}
+      ></Tabs.Screen>
+      <Tabs.Screen
+        name="flight"
+        options={{ headerTitle: "flight", tabBarLabel: "flight" }}
       ></Tabs.Screen>
       {/* <Tabs.Screen
         name="profile"
