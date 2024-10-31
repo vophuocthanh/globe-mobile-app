@@ -1,3 +1,5 @@
+import { useNavigation } from "@react-navigation/native";
+import { router } from "expo-router";
 import React, { useRef, useState } from "react";
 import {
     View,
@@ -19,6 +21,7 @@ const TravelTour1: React.FC = () => {
     const [liked, setLiked] = useState<Set<number>>(new Set());
     const [currentPage, setCurrentPage] = useState(0);
     const flatListRef = useRef<FlatList<any>>(null);
+    const navigation = useNavigation()
 
     const handleHeartPress = (id: number) => {
         setLiked((prevLiked) => {
@@ -97,31 +100,35 @@ return (
             renderItem={({ item }) => (
             <View style={styles.pageContainer}>
                 {item.map((card: CardData) => (
-                <Card key={card.id} style={styles.card}>
-                    <Card.Cover source={card.image} style={styles.cardImage} />
-                    <Text style={styles.star}>
-                    <Icon name="star" color="#FF9680" /> 4.8
-                    </Text>
-                    <TouchableOpacity
-                    style={[
-                        styles.heart,
-                        {
-                        backgroundColor: liked.has(card.id)
-                            ? "#FF9680"
-                            : "rgba(135, 206, 250, 0.5)",
-                        },
-                    ]}
-                    onPress={() => handleHeartPress(card.id)}
-                    >
-                    <Icon
-                        name="heart"
-                        color={liked.has(card.id) ? "#FFF" : "#FF9680"}
-                    />
+                    <TouchableOpacity onPress={()=> router.push('/tour/detail-tour/detail-tour')}>
+                        <Card key={card.id} style={styles.card} >
+                            <Card.Cover source={card.image} style={styles.cardImage} />
+                            <Text style={styles.star}>
+                            <Icon name="star" color="#FF9680" /> 4.8
+                            </Text>
+                            <TouchableOpacity
+                            style={[
+                                styles.heart,
+                                {
+                                backgroundColor: liked.has(card.id)
+                                    ? "#FF9680"
+                                    : "rgba(135, 206, 250, 0.5)",
+                                },
+                            ]}
+                            onPress={() => handleHeartPress(card.id)}
+                            >
+                            <Icon
+                                name="heart"
+                                color={liked.has(card.id) ? "#FFF" : "#FF9680"}
+                            />
+                            </TouchableOpacity>
+                            <View style={styles.cardContent}>
+                            <Text style={styles.flight}>{card.flight}</Text>
+                            </View>
+                        </Card>
+
                     </TouchableOpacity>
-                    <View style={styles.cardContent}>
-                    <Text style={styles.flight}>{card.flight}</Text>
-                    </View>
-                </Card>
+                
                 ))}
             </View>
             )}

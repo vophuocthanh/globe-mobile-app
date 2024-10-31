@@ -3,9 +3,11 @@ import React from 'react';
 import { Button } from 'react-native';
 import '../styles/global.css';
 import { useNavigation } from '@react-navigation/native';
-import ForgotPassword from './login/forgotpassword/forgotpassword';
+
 import { createDrawerNavigator } from '@react-navigation/drawer';
-import Header from './getstart/header/header';
+
+import DetailTour from './tour/detail-tour/detail-tour';
+import GetStart from './getstart/getstart';
 
 export default function _layout() {
   const router = useRouter();
@@ -32,7 +34,7 @@ export default function _layout() {
       
       name='index'
       options={{
-        header:  () => <Header />,
+        header:  () => <GetStart />,
       }}
     />
       <Stack.Screen
@@ -43,7 +45,7 @@ export default function _layout() {
             
             <Button
               title='Login'
-              onPress={() => router.push('login/login')}
+              onPress={() => router.push('/login/login')}
               
               //onPress={() => navigation.navigate('/login')}
             ></Button>
@@ -81,6 +83,14 @@ export default function _layout() {
           headerShown: false,
         }}
       />
+      <Stack.Screen
+      name='tour/detail-tour/detail-tour'
+      options={{
+        title: 'Hello Modal',
+        presentation: 'modal',
+        header:  () => <DetailTour />,
+      }}
+    />
       <Stack.Screen
         name="(tabs)"
         options={{
