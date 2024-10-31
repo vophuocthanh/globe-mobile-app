@@ -1,9 +1,28 @@
 import { StyleSheet } from 'react-native';
 const styles = StyleSheet.create({
+    skipContainer: {
+        flexDirection: "row",
+        paddingHorizontal: 5,
+        paddingVertical: 10,
+        alignItems:'center',
+        justifyContent: "flex-end",
+    },
+    headerTeaxt: {
+        fontSize: 20,
+        fontWeight:400,
+        marginRight: 10,
+        flexDirection: 'row',
+        justifyContent:'center',
+        alignItems:'center'
+    },
     container: {
+        top: 30,
+        
+        backgroundColor: "#fff"
+    },
+    getContainer: {
         paddingHorizontal: 32,
         paddingVertical: 80,
-        backgroundColor: "#fff"
     },
     title: {
         marginBottom: 17,
