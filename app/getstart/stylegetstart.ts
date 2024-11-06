@@ -3,7 +3,7 @@ const styles = StyleSheet.create({
     skipContainer: {
         flexDirection: "row",
         paddingHorizontal: 5,
-        paddingVertical: 10,
+        paddingVertical: 100,
         alignItems:'center',
         justifyContent: "flex-end",
     },
@@ -17,12 +17,11 @@ const styles = StyleSheet.create({
     },
     container: {
         top: 30,
-        
         backgroundColor: "#fff"
     },
     getContainer: {
         paddingHorizontal: 32,
-        paddingVertical: 80,
+        paddingVertical: 1000,
     },
     title: {
         marginBottom: 17,
