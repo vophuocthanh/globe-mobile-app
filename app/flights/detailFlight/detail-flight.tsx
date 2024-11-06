@@ -26,9 +26,18 @@ export default function DetailFlight() {
         style={styles.headerImage}
       />
       <View style={styles.imagesld}>
-        <Image source={require("@/assets/images/caray.png")} />
-        <Image source={require("@/assets/images/quatar.png")} />
-        <Image source={require("@/assets/images/conrad.png")} />
+        <Image
+          source={require("@/assets/images/caray.png")}
+          style={styles.img}
+        />
+        <Image
+          source={require("@/assets/images/quatar.png")}
+          style={styles.img}
+        />
+        <Image
+          source={require("@/assets/images/conrad.png")}
+          style={styles.img}
+        />
       </View>
       <Text style={styles.h1}>Emirates Airlines</Text>
       <Text style={styles.b1}>Basic Economy Features</Text>
@@ -119,25 +128,39 @@ const styles = StyleSheet.create({
   container: {
     flexGrow: 1, // Cho phép ScrollView lấp đầy không gian
     paddingBottom: 200,
+    paddingHorizontal: 30,
+    marginTop: 50,
   },
   headerImage: {
     width: "100%",
     borderRadius: 30,
     resizeMode: "cover",
+    height: 150,
+  },
+  img: {
+    position: "absolute", // Đặt các ảnh chồng lên nhau
+    top: 0, // Căn chỉnh vị trí ảnh theo ý muốn
+    left: 0, // Căn chỉnh vị trí ảnh theo ý muốn
+    width: "100%", // Đảm bảo ảnh chiếm toàn bộ chiều rộng container
+    height: "100%", // Đảm bảo ảnh chiếm toàn bộ chiều cao container
+    resizeMode: "contain",
   },
   h1: {
-    fontSize: 40,
+    fontSize: 20,
   },
   b1: {
-    fontSize: 40,
+    fontSize: 20,
     fontWeight: "bold",
   },
   imagesld: {
     flexDirection: "row",
     marginTop: 20,
+    position: "relative",
+    width: "100%",
+    height: 200,
   },
   tt: {
-    fontSize: 30,
+    fontSize: 20,
   },
   bookButton: {
     marginTop: 20,
@@ -153,7 +176,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
     paddingHorizontal: 20,
     flexDirection: "row",
-    justifyContent: "space-around",
+    justifyContent: "space-between",
   },
   checkbox: {
     alignItems: "center",
@@ -161,13 +184,14 @@ const styles = StyleSheet.create({
   },
   label: {
     marginLeft: 10,
-    fontSize: 16,
+    fontSize: 13,
   },
   policyContainer: {
     marginTop: 20,
     paddingHorizontal: 20,
     backgroundColor: "#8DD3BB",
     height: 200,
+    borderRadius: 10,
   },
   policyItem: {
     flexDirection: "row",
@@ -188,7 +212,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
-    marginVertical: 10,
+    marginVertical: 20,
     paddingHorizontal: 10,
     backgroundColor: "#fff",
     borderRadius: 10,
@@ -198,9 +222,9 @@ const styles = StyleSheet.create({
     shadowRadius: 2.0,
     elevation: 3,
     textAlign: "center",
-    marginLeft: 70,
-    marginRight: 70,
+
     height: 100,
+    width: "100%",
   },
   image2: {
     width: "40%",
