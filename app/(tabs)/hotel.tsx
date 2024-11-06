@@ -6,6 +6,7 @@ import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { Avatar, Button, Card, Drawer, Searchbar } from "react-native-paper";
 import { BadgeDollarSign, BedDouble, Calendar, CircleHelp, LogOut, Menu, Plane, Ratio, Users } from 'lucide-react-native';
 import { stylesHeader } from "../components/headerCSS";
+import { router } from "expo-router";
 
 
 
@@ -17,6 +18,8 @@ export default function Hotel() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isAvatarOpen, setIsAvatarOpen] = useState(false)
   const [active, setActive] = useState("");
+  const [selectedDot, setSelectedDot] = useState('Popular');
+
 
 
   const toggleAvatarDrawerMenu = () => {
@@ -59,6 +62,7 @@ export default function Hotel() {
       return newLiked;
     });
   };
+
   const iconMap: { [key: string]: string } = {
     Popular: "fire",
     Lake: "water",
@@ -93,10 +97,10 @@ export default function Hotel() {
   });
 
   // Hàm để render các nút tùy chỉnh
-  const renderButton = (buttonValue: string, label: string, icon: string) => (
+  const renderButton = (buttonValue: string, dotValue: string, label: string, icon: string) => (
     <TouchableOpacity
       style={[styles.button, getButtonStyle(buttonValue)]}
-      onPress={() => setValue(buttonValue)}
+      onPress={() => { setValue(buttonValue), setSelectedDot(dotValue) }}
     >
       <View style={styles.iconButton}>
         <Text style={{ color: getButtonStyle(buttonValue).color }}>{label}</Text>
@@ -104,15 +108,38 @@ export default function Hotel() {
     </TouchableOpacity>
   );
 
+  const renderDot = (dotValue: string, buttonValue: string) => (
+    <View style={{
+      display: 'flex',
+      flexDirection: 'row',
+      justifyContent: "center",
+      alignItems: "center",
+      marginTop: 10,
+    }}>
+      <TouchableOpacity onPress={() => { setSelectedDot(dotValue), setValue(buttonValue) }}>
+        <View
+          style={[
+            {
+              width: 10,
+              height: 10,
+              borderRadius: 5,
+              marginHorizontal: 5,
+            }, { backgroundColor: selectedDot === dotValue ? "#FF9680" : "#D3D3D3" },
+          ]}
+        />
+      </TouchableOpacity>
+    </View>
+  )
+
   // Nội dung tương ứng với mỗi lựa chọn
   const renderContent = () => {
-    switch (value) {
-      case 'Popular':
+    switch (true) {
+      case value === 'Popular' || selectedDot === 'Popular':
         return (
           <View style={styles.cardContainer}>
             {cardData.length > 0 ? (
               cardData.map((card) => (
-                <Card key={card.id} style={styles.card}>
+                <Card key={card.id} style={styles.card} onPress={() => router.push("/hotel/hotelDetail")}>
                   <Card.Cover source={card.image} style={styles.cardImage} />
                   <Text style={styles.star}>
                     <Icon name="star" color="#FF9680" />
@@ -151,11 +178,11 @@ export default function Hotel() {
             )}
           </View>
         );
-      case 'Lake':
+      case value === 'Lake' || selectedDot === 'Lake':
         return <Text style={styles.contentText}>Nội dung hồ</Text>;
-      case 'Beach':
+      case value === 'Beach' || selectedDot === 'Beach':
         return <Text style={styles.contentText}>Nội dung bãi biển</Text>;
-      case 'Mountain':
+      case value === 'Mountain' || selectedDot === 'Mountain':
         return <Text style={styles.contentText}>Nội dung núi</Text>;
       default:
         return null;
@@ -166,9 +193,6 @@ export default function Hotel() {
   return (
     <>
       <ScrollView>
-
-
-
         <View style={styles.container}>
 
           <View style={stylesHeader.headerContainer}>
@@ -442,23 +466,19 @@ export default function Hotel() {
 
           <SafeAreaView style={styles.container}>
             <View style={styles.buttonContainer}>
-              {renderButton('Popular', 'Popular', 'fire')}
-              {renderButton('Lake', 'Lake', 'waves')}
-              {renderButton('Beach', 'Beach', 'weather-sunset')}
-              {renderButton('Mountain', 'Mountain', 'terrain')}
+              {renderButton('Popular', 'Popular', 'Popular', 'fire')}
+              {renderButton('Lake', 'Lake', 'Lake', 'waves')}
+              {renderButton('Beach', 'Beach', 'Beach', 'weather-sunset')}
+              {renderButton('Mountain', 'Mountain', 'Mountain', 'terrain')}
             </View>
             <View style={styles.contentContainer}>
               {renderContent()}
             </View>
-            <View style={styles.iconContainer}>
-              {[...Array(4)].map((_, index) => (
-                <Icon
-                  key={index}
-                  name="circle"
-                  size={10}
-                  style={styles.icon}
-                />
-              ))}
+            <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
+              {renderDot('Popular', 'Popular')}
+              {renderDot('Lake', 'Lake')}
+              {renderDot('Beach', 'Beach')}
+              {renderDot('Mountain', 'Mountain')}
             </View>
           </SafeAreaView>
 
@@ -627,4 +647,4 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginRight: 4,                // Khoảng cách giữa văn bản và biểu tượng
   },
-});
+})

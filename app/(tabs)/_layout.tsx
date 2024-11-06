@@ -28,6 +28,10 @@ export default function _layout() {
         name="flight"
         options={{ headerTitle: "flight", tabBarLabel: "flight" }}
       ></Tabs.Screen>
+      <Tabs.Screen
+        name="/hotel/hotelDetail"
+        options={{ headerTitle: "Hotel Detail", tabBarLabel: "Hotel Detail" }}
+      />
       {/* <Tabs.Screen
         name="profile"
         options={{
