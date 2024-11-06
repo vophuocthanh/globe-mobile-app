@@ -5,7 +5,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 5,
         paddingVertical: 100,
         alignItems:'center',
-        justifyContent: "flex-end",
+        justifyContent: "flex-end",        
     },
     headerTeaxt: {
         fontSize: 20,

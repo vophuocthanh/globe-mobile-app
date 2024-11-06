@@ -18,7 +18,7 @@ import {
   StyleSheet,
   ScrollView,
 } from "react-native";
-import { Avatar, Searchbar, Drawer, Button, Card } from "react-native-paper";
+import { Avatar, Searchbar, Drawer, Button,  } from "react-native-paper";
 import stylesHeader from "../header/header";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 

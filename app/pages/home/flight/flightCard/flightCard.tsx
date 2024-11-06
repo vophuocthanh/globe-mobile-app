@@ -1,3 +1,4 @@
+import { router } from "expo-router";
 import React, { useRef, useState } from "react";
 import {
   View,
@@ -93,31 +94,37 @@ const FlightCard: React.FC = () => {
         renderItem={({ item }) => (
           <View style={styles.pageContainer}>
             {item.map((card: CardData) => (
-              <Card key={card.id} style={styles.card}>
-                <Card.Cover source={card.image} style={styles.cardImage} />
-                <Text style={styles.star}>
-                  <Icon name="star" color="#FF9680" /> 4.8
-                </Text>
-                <TouchableOpacity
-                  style={[
-                    styles.heart,
-                    {
-                      backgroundColor: liked.has(card.id)
-                        ? "#FF9680"
-                        : "rgba(135, 206, 250, 0.5)",
-                    },
-                  ]}
-                  onPress={() => handleHeartPress(card.id)}
-                >
-                  <Icon
-                    name="heart"
-                    color={liked.has(card.id) ? "#FFF" : "#FF9680"}
-                  />
-                </TouchableOpacity>
-                <View style={styles.cardContent}>
-                  <Text style={styles.flight}>{card.flight}</Text>
-                </View>
-              </Card>
+              <TouchableOpacity
+                onPress={() =>
+                  router.push("/flights/detailFlight/detail-flight")
+                }
+              >
+                <Card key={card.id} style={styles.card}>
+                  <Card.Cover source={card.image} style={styles.cardImage} />
+                  <Text style={styles.star}>
+                    <Icon name="star" color="#FF9680" /> 4.8
+                  </Text>
+                  <TouchableOpacity
+                    style={[
+                      styles.heart,
+                      {
+                        backgroundColor: liked.has(card.id)
+                          ? "#FF9680"
+                          : "rgba(135, 206, 250, 0.5)",
+                      },
+                    ]}
+                    onPress={() => handleHeartPress(card.id)}
+                  >
+                    <Icon
+                      name="heart"
+                      color={liked.has(card.id) ? "#FFF" : "#FF9680"}
+                    />
+                  </TouchableOpacity>
+                  <View style={styles.cardContent}>
+                    <Text style={styles.flight}>{card.flight}</Text>
+                  </View>
+                </Card>
+              </TouchableOpacity>
             ))}
           </View>
         )}
