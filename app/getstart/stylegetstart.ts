@@ -6,6 +6,7 @@ const styles = StyleSheet.create({
         paddingVertical: 10,
         alignItems:'center',
         justifyContent: "flex-end",
+        
     },
     headerTeaxt: {
         fontSize: 20,
@@ -22,7 +23,7 @@ const styles = StyleSheet.create({
     },
     getContainer: {
         paddingHorizontal: 32,
-        paddingVertical: 80,
+        paddingVertical: 1000,
     },
     title: {
         marginBottom: 17,

@@ -11,7 +11,7 @@ import { AntDesign } from "@expo/vector-icons";
 
 export default function GetStart() {
     return (
-        <SafeAreaView  >
+        // <SafeAreaView  >
             <View style={styles.container}>
                 <View style={styles.skipContainer}>
                     <Link href='/login/login' asChild>
@@ -53,7 +53,7 @@ export default function GetStart() {
                     </View>
                 </View>
             </View>
-        </SafeAreaView>
+        // </SafeAreaView>
         
     );
 }

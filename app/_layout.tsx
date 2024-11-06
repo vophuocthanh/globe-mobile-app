@@ -1,13 +1,14 @@
-import { Stack, useRouter } from 'expo-router';
-import React from 'react';
-import { Button } from 'react-native';
-import '../styles/global.css';
-import { useNavigation } from '@react-navigation/native';
+import { Stack, useRouter } from "expo-router";
+import React from "react";
+import { Button } from "react-native";
+import "../styles/global.css";
+import { useNavigation } from "@react-navigation/native";
 
-import { createDrawerNavigator } from '@react-navigation/drawer';
+import { createDrawerNavigator } from "@react-navigation/drawer";
 
-import DetailTour from './tour/detail-tour/detail-tour';
-import GetStart from './getstart/getstart';
+import DetailTour from "./tour/detail-tour/detail-tour";
+import GetStart from "./getstart/getstart";
+import DetailFlight from "./flights/detailFlight/detail-flight";
 
 export default function _layout() {
   const router = useRouter();
@@ -31,66 +32,73 @@ export default function _layout() {
         }}
       /> */}
       <Stack.Screen
-      
-      name='index'
-      options={{
-        header:  () => <GetStart />,
-      }}
-    />
+        name="index"
+        options={{
+          header: () => <GetStart />,
+        }}
+      />
       <Stack.Screen
         name="register/index"
         options={{
           title: "Register",
           headerRight: () => (
-            
             <Button
-              title='Login'
-              onPress={() => router.push('/login/login')}
-              
+              title="Login"
+              onPress={() => router.push("/login/login")}
+
               //onPress={() => navigation.navigate('/login')}
             ></Button>
           ),
         }}
       />
       <Stack.Screen
-        name='login/login'
+        name="login/login"
         options={{
-          title: 'Login',
-          presentation: 'modal',
+          title: "Login",
+          presentation: "modal",
           headerShown: false,
         }}
       />
       <Stack.Screen
-        name='hello'
+        name="hello"
         options={{
-          title: 'Hello Modal1',
-          presentation: 'modal',
+          title: "Hello Modal1",
+          presentation: "modal",
         }}
       />
       <Stack.Screen
-        name='login/forgotpassword/forgotpassword'
+        name="login/forgotpassword/forgotpassword"
         options={{
-          title: '',
-          presentation: 'modal',
+          title: "",
+          presentation: "modal",
         }}
       />
-      
+
       <Stack.Screen
-        name='getstart/adventures/adventures'
+        name="getstart/adventures/adventures"
         options={{
-          title: 'Hello Modal',
-          presentation: 'modal',
+          title: "Hello Modal",
+          presentation: "modal",
           headerShown: false,
         }}
       />
       <Stack.Screen
-      name='tour/detail-tour/detail-tour'
-      options={{
-        title: 'Hello Modal',
-        presentation: 'modal',
-        header:  () => <DetailTour />,
-      }}
-    />
+        name="tour/detail-tour/detail-tour"
+        options={{
+          title: "Hello Modal",
+          presentation: "modal",
+          header: () => <DetailTour />,
+        }}
+      />
+      <Stack.Screen
+        name="flights/detailFlight/detail-flight"
+        options={{
+          title: "Hello Modal",
+          presentation: "modal",
+          headerShown: false,
+        }}
+      />
+
       <Stack.Screen
         name="(tabs)"
         options={{
@@ -100,12 +108,9 @@ export default function _layout() {
       <Stack.Screen
         name="[missing]"
         options={{
-          title: 'not!!!',
+          title: "not!!!",
         }}
       />
-
     </Stack>
-
-    
   );
 }
