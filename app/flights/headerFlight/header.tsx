@@ -17,35 +17,39 @@ export default function HeaderFlights() {
   };
 
   return (
-    <ScrollView>
-      <View style={{ paddingBottom: 20 }}>
-        {/* Header Section */}
-        <View style={style.container}>
-          <ArrowLeft size={30} color="black" onPress={toggleDrawer} />
+    <View style={{ flex: 1 }}>
+      <ScrollView>
+        <View style={{ paddingBottom: 20 }}>
+          {/* Header Section */}
+          <View style={styles.container}>
+            <ArrowLeft size={30} color="black" onPress={toggleDrawer} />
 
-          <TouchableOpacity onPress={toggleAvatarDrawer}>
-            <Avatar.Image
-              style={style.avatar}
-              size={36}
-              source={require("@/assets/images/Avatar.png")}
-            />
-          </TouchableOpacity>
+            <TouchableOpacity onPress={toggleAvatarDrawer}>
+              <Avatar.Image
+                style={styles.avatar}
+                size={36}
+                source={require("@/assets/images/Avatar.png")}
+              />
+            </TouchableOpacity>
+          </View>
         </View>
+      </ScrollView>
 
-        {/* Drawer for Avatar */}
-        {isAvatarDrawerOpen && (
-          <Drawer.Section style={style.avatarDrawer}>
+      {/* Drawer for Avatar */}
+      {isAvatarDrawerOpen && (
+        <View style={[styles.overlay, StyleSheet.absoluteFill]}>
+          <Drawer.Section style={styles.avatarDrawer}>
             <View>
               <Drawer.Item
                 label="LogOut"
                 active={active === "LogOut"}
                 onPress={() => setActive("LogOut")}
                 style={[
-                  style.drawerItem,
-                  active === "LogOut" ? style.activeItem : style.inactiveItem,
+                  styles.drawerItem,
+                  active === "LogOut" ? styles.activeItem : styles.inactiveItem,
                 ]}
               />
-              <LogOut size={16} color="black" style={style.LogOut} />
+              <LogOut size={16} color="black" style={styles.LogOut} />
             </View>
             <View>
               <Drawer.Item
@@ -53,18 +57,21 @@ export default function HeaderFlights() {
                 active={active === "Password"}
                 onPress={() => setActive("Password")}
                 style={[
-                  style.drawerItem,
-                  active === "Password" ? style.activeItem : style.inactiveItem,
+                  styles.drawerItem,
+                  active === "Password"
+                    ? styles.activeItem
+                    : styles.inactiveItem,
                 ]}
               />
             </View>
           </Drawer.Section>
-        )}
-      </View>
-    </ScrollView>
+        </View>
+      )}
+    </View>
   );
 }
-const style = StyleSheet.create({
+
+const styles = StyleSheet.create({
   container: {
     marginTop: 10,
     marginLeft: 8,
@@ -112,9 +119,16 @@ const style = StyleSheet.create({
     top: 50,
     right: 10,
     width: "55%",
-    height: "100%",
     backgroundColor: "#D9D9D9",
     zIndex: 1000,
     borderRadius: 20,
+  },
+  overlay: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    zIndex: 2000,
   },
 });

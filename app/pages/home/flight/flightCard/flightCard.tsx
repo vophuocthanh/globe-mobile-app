@@ -1,27 +1,54 @@
-import { router } from "expo-router";
-import React, { useRef, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import {
   View,
   Text,
   TouchableOpacity,
   StyleSheet,
+  Image,
   FlatList,
+  ActivityIndicator,
 } from "react-native";
 import { Card } from "react-native-paper";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import { router } from "expo-router";
+import axios from "axios";
 
+// Tạo interface cho dữ liệu chuyến bay
 interface CardData {
-  id: number;
-  image: any;
+  id: string;
+  image: string;
   flight: string;
+  price: string;
+  trip_time: string;
+  take_place: string;
+  destination: string;
 }
 
 const FlightCard: React.FC = () => {
-  const [liked, setLiked] = useState<Set<number>>(new Set());
+  const [liked, setLiked] = useState<Set<string>>(new Set());
   const [currentPage, setCurrentPage] = useState(0);
+  const [flights, setFlights] = useState<CardData[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
   const flatListRef = useRef<FlatList<any>>(null);
 
-  const handleHeartPress = (id: number) => {
+  useEffect(() => {
+    const fetchFlightData = async () => {
+      try {
+        const response = await axios.get(
+          "http://192.168.56.1:3001/api/flight-crawl/crawl"
+        );
+        setFlights(response.data.data);
+        setLoading(false);
+      } catch (err) {
+        console.error(err);
+        setLoading(false);
+      }
+    };
+
+    fetchFlightData();
+  }, []);
+
+  const handleHeartPress = (id: string) => {
     setLiked((prevLiked) => {
       const newLiked = new Set(prevLiked);
       if (newLiked.has(id)) {
@@ -32,55 +59,28 @@ const FlightCard: React.FC = () => {
       return newLiked;
     });
   };
-
-  const cardData = [
-    {
-      id: 1,
-      image: require("../../../../../assets/images/caray.png"),
-      flight: "Cathay Pacific",
-    },
-    {
-      id: 2,
-      image: require("../../../../../assets/images/quatar.png"),
-      flight: "Qatar Airways",
-    },
-    {
-      id: 3,
-      image: require("../../../../../assets/images/caray.png"),
-      flight: "Cathay Pacific",
-    },
-    {
-      id: 4,
-      image: require("../../../../../assets/images/quatar.png"),
-      flight: "Qatar Airways",
-    },
-  ];
+  const formatPriceToVND = (price: any) => {
+    const priceString = String(price);
+    const numberPrice = parseFloat(priceString.replace(/[^0-9.-]+/g, ""));
+    return numberPrice.toLocaleString("vi-VN", {
+      style: "currency",
+      currency: "VND",
+    });
+  };
 
   const pages = [];
-  for (let i = 0; i < cardData.length; i += 2) {
-    pages.push(cardData.slice(i, i + 2));
+  for (let i = 0; i < flights.length; i += 2) {
+    pages.push(flights.slice(i, i + 2));
   }
-
-  // const handleNext = () => {
-  //   if (currentPage < pages.length - 1) {
-  //     const nextPage = currentPage + 1;
-  //     flatListRef.current?.scrollToIndex({ index: nextPage });
-  //     setCurrentPage(nextPage);
-  //   }
-  // };
-
-  // const handlePrev = () => {
-  //   if (currentPage > 0) {
-  //     const prevPage = currentPage - 1;
-  //     flatListRef.current?.scrollToIndex({ index: prevPage });
-  //     setCurrentPage(prevPage);
-  //   }
-  // };
 
   const handleIndicatorPress = (index: number) => {
     flatListRef.current?.scrollToIndex({ index });
     setCurrentPage(index);
   };
+
+  if (loading) {
+    return <ActivityIndicator size="large" color="#FF9680" />;
+  }
 
   return (
     <View style={styles.container}>
@@ -90,17 +90,22 @@ const FlightCard: React.FC = () => {
         horizontal
         pagingEnabled
         showsHorizontalScrollIndicator={false}
-        keyExtractor={(_, index) => index.toString()}
+        keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
           <View style={styles.pageContainer}>
             {item.map((card: CardData) => (
               <TouchableOpacity
+                key={card.id}
                 onPress={() =>
                   router.push("/flights/detailFlight/detail-flight")
                 }
               >
-                <Card key={card.id} style={styles.card}>
-                  <Card.Cover source={card.image} style={styles.cardImage} />
+                <Card style={styles.card}>
+                  <Image
+                    source={{ uri: card.image }}
+                    style={styles.cardImage}
+                    resizeMode="cover"
+                  />
                   <Text style={styles.star}>
                     <Icon name="star" color="#FF9680" /> 4.8
                   </Text>
@@ -121,7 +126,10 @@ const FlightCard: React.FC = () => {
                     />
                   </TouchableOpacity>
                   <View style={styles.cardContent}>
-                    <Text style={styles.flight}>{card.flight}</Text>
+                    <Text style={styles.flight}>{card.take_place}</Text>
+                    <Text style={styles.price}>
+                      {formatPriceToVND(card.price)}
+                    </Text>
                   </View>
                 </Card>
               </TouchableOpacity>
@@ -131,7 +139,6 @@ const FlightCard: React.FC = () => {
         contentContainerStyle={styles.cardContainer}
       />
 
-      {/* Phần dấu chấm */}
       <View style={styles.indicatorContainer}>
         {pages.map((_, index) => (
           <TouchableOpacity
@@ -144,30 +151,12 @@ const FlightCard: React.FC = () => {
                 {
                   backgroundColor:
                     currentPage === index ? "#FF9680" : "#D3D3D3",
-                }, // Active là màu cam
+                },
               ]}
             />
           </TouchableOpacity>
         ))}
       </View>
-
-      {/* Nút chuyển trang */}
-      {/* <View style={styles.buttonContainer}>
-        <TouchableOpacity
-          style={styles.button}
-          onPress={handlePrev}
-          disabled={currentPage === 0}
-        >
-          <Text style={styles.buttonText}>Previous</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.button}
-          onPress={handleNext}
-          disabled={currentPage === pages.length - 1}
-        >
-          <Text style={styles.buttonText}>Next</Text>
-        </TouchableOpacity>
-      </View> */}
     </View>
   );
 };
@@ -181,23 +170,27 @@ const styles = StyleSheet.create({
   },
   pageContainer: {
     flexDirection: "row",
+    marginBottom: 10,
   },
   cardContainer: {
     paddingLeft: 10,
   },
   card: {
     alignItems: "center",
-    width: 160,
+    width: 150,
     marginRight: 15,
+    height: 250,
   },
   cardImage: {
     height: 120,
     width: 140,
-    paddingTop: 8,
+    marginTop: 4,
+    borderRadius: 10,
   },
   cardContent: {
-    alignItems: "center",
+    width: "100%",
     gap: 8,
+    paddingTop: 4,
   },
   star: {
     color: "black",
@@ -219,9 +212,17 @@ const styles = StyleSheet.create({
   },
   flight: {
     paddingTop: 4,
-    fontSize: 17,
+    fontSize: 10,
     fontWeight: "bold",
     paddingBottom: 30,
+    width: "100%",
+    height: 70,
+  },
+  price: {
+    fontSize: 14,
+    color: "#FF9680",
+    textAlign: "left",
+    paddingBottom: 20,
   },
   indicatorContainer: {
     flexDirection: "row",
@@ -234,22 +235,7 @@ const styles = StyleSheet.create({
     height: 10,
     borderRadius: 5,
     marginHorizontal: 5,
-    backgroundColor: "#D3D3D3", // Màu chấm mặc định
-  },
-  buttonContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    marginTop: 20,
-  },
-  button: {
-    padding: 10,
-    backgroundColor: "#FF9680",
-    borderRadius: 5,
-    marginHorizontal: 10,
-  },
-  buttonText: {
-    color: "#fff",
-    fontWeight: "bold",
+    backgroundColor: "#D3D3D3",
   },
 });
 
