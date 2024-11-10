@@ -2,8 +2,6 @@ import { StyleSheet } from 'react-native';
 const styles = StyleSheet.create({
     skipContainer: {
         flexDirection: "row",
-        paddingHorizontal: 5,
-        paddingVertical: 100,
         alignItems:'center',
         justifyContent: "flex-end",        
     },
@@ -16,12 +14,10 @@ const styles = StyleSheet.create({
         alignItems:'center'
     },
     container: {
-        top: 30,
         backgroundColor: "#fff"
     },
     getContainer: {
-        paddingHorizontal: 32,
-        paddingVertical: 1000,
+        marginTop: 40
     },
     title: {
         marginBottom: 17,
@@ -45,6 +41,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         flexDirection: 'row',
         marginTop: 30,
+        marginBottom: 30
     }
 
 })

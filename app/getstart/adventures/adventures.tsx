@@ -90,7 +90,7 @@ export default function Adventures() {
     const router = useRouter();
     const handleNext = () => {
         if(curentIndex === dataAdventures.length -1){
-            router.push('login/login')
+            router.push('/login/login')
             return
         }
         setCurentIndex(item => item + 1)

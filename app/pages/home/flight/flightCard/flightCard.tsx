@@ -35,7 +35,7 @@ const FlightCard: React.FC = () => {
     const fetchFlightData = async () => {
       try {
         const response = await axios.get(
-          "http://192.168.56.1:3001/api/flight-crawl/crawl"
+          "http://192.168.1.28:3001/api/flight-crawl/crawl"
         );
         setFlights(response.data.data);
         setLoading(false);
