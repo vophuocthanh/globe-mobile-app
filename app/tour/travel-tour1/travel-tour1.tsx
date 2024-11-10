@@ -1,27 +1,35 @@
+import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
+import axios from "axios";
 import { router } from "expo-router";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
     View,
     Text,
     TouchableOpacity,
     StyleSheet,
     FlatList,
+    ActivityIndicator,
+    Image,
 } from "react-native";
-import { Card } from "react-native-paper";
-import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import {  Card, IconButton } from "react-native-paper";
 
 interface CardData {
     id: number;
     image: any;
-    flight: string;
+    name: string,
+    title: string,
+    country: string,
+    rating: number,
+    price: number,
 }
 
 const TravelTour1: React.FC = () => {
     const [liked, setLiked] = useState<Set<number>>(new Set());
     const [currentPage, setCurrentPage] = useState(0);
+    const [tours, setTourss] = useState<CardData[]>([]);
     const flatListRef = useRef<FlatList<any>>(null);
-    const navigation = useNavigation()
+    const [loading, setLoading] = useState<boolean>(true);
 
     const handleHeartPress = (id: number) => {
         setLiked((prevLiked) => {
@@ -34,59 +42,41 @@ const TravelTour1: React.FC = () => {
         return newLiked;
         });
     };
+    useEffect(() => {
+        const fetchFlightData = async () => {
+        try {
+            const response = await axios.get(
+            "http://192.168.1.28:3001/api/tour"
+            );
+            setTourss(response.data.data);
+            setLoading(false);
+        } catch (err) {
+            console.error(err);
+            setLoading(false);
+        }
+        };
+    
+        fetchFlightData();
+    }, []);
+    if (loading) {
+        return <ActivityIndicator size="large" color="#FF9680" />;
+    }
+    console.log(tours,"123");
+    
+    
 
-    const cardData = [
-        {
-            id: 1,
-            image: require("@/assets/images/ImageHaNoi.png"),
-            tour: "Amazing Thailand",
-        },
-        {
-            id: 2,
-            image: require("@/assets/images/caray.png"),
-            tour: "Bali Adventure",
-        },
-        {
-            id: 3,
-            image: require("@/assets/images/generated-1.png"),
-            tour: "Japan Explorer",
-        },
-        {
-            id: 4,
-            image: require("@/assets/images/generated-2.png"),
-            tour: "Europe Escape",
-        },
-        {
-            id: 5,
-            image: require("@/assets/images/generated-1.png"),
-            tour: "Japan Explorer",
-        },
-        {
-            id: 6,
-            image: require("@/assets/images/generated-2.png"),
-            tour: "Europe Escape",
-        },
-        {
-            id: 7,
-            image: require("@/assets/images/generated-1.png"),
-            tour: "Japan Explorer",
-        },
-        {
-            id: 8,
-            image: require("@/assets/images/generated-2.png"),
-            tour: "Europe Escape",
-        },
-    ];
 
     const pages = [];
-    for (let i = 0; i < cardData.length; i += 2) {
-        pages.push(cardData.slice(i, i + 2));
+    
+    for (let i = 0; i < tours.length; i += 2) {
+        pages.push(tours.slice(i, i + 2));
     }
 
     const handleIndicatorPress = (index: number) => {
         flatListRef.current?.scrollToIndex({ index });
         setCurrentPage(index);
     };
+    console.log(pages,"pa");
 
 return (
     <View style={styles.container}>
@@ -101,34 +91,26 @@ return (
             <View style={styles.pageContainer}>
                 {item.map((card: CardData) => (
                     <TouchableOpacity onPress={()=> router.push('/tour/detail-tour/detail-tour')}>
-                        <Card key={card.id} style={styles.card} >
-                            <Card.Cover source={card.image} style={styles.cardImage} />
-                            <Text style={styles.star}>
-                            <Icon name="star" color="#FF9680" /> 4.8
-                            </Text>
-                            <TouchableOpacity
-                            style={[
-                                styles.heart,
-                                {
-                                backgroundColor: liked.has(card.id)
-                                    ? "#FF9680"
-                                    : "rgba(135, 206, 250, 0.5)",
-                                },
-                            ]}
-                            onPress={() => handleHeartPress(card.id)}
-                            >
-                            <Icon
-                                name="heart"
-                                color={liked.has(card.id) ? "#FFF" : "#FF9680"}
-                            />
-                            </TouchableOpacity>
-                            <View style={styles.cardContent}>
-                            <Text style={styles.flight}>{card.flight}</Text>
+                        <Card style={styles.card}>
+                            <Image source={{ uri: card.image }} style={styles.image} />
+                            <View style={styles.ratingContainer}>
+                                <MaterialIcons name="star" size={18} color="red" />
+                                <Text style={styles.ratingText}>{card.rating}</Text>
                             </View>
-                        </Card>
-
+                            <IconButton
+                                icon={() => <Ionicons name="heart-outline" size={20} color="white" />}
+                                style={styles.heartIcon}
+                            />
+                            <Card.Content>
+                                <View style={styles.locationContainer}>
+                                <Ionicons name="location-outline" size={16} color="red" />
+                                <Text style={styles.country}>{card.name}</Text>
+                                </View>
+                                <Text style={styles.price}>Price: {
+                                    new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(card.price)}</Text>
+                            </Card.Content>
+                            </Card>
                     </TouchableOpacity>
-                
                 ))}
             </View>
             )}
@@ -171,11 +153,6 @@ const styles = StyleSheet.create({
     },
     cardContainer: {
         paddingLeft: 10,
-    },
-    card: {
-        alignItems: "center",
-        width: 160,
-        marginRight: 15,
     },
     cardImage: {
         height: 120,
@@ -238,6 +215,57 @@ const styles = StyleSheet.create({
         color: "#fff",
         fontWeight: "bold",
     },
+    card: {
+        width: 180,
+        marginHorizontal: 10,
+        borderRadius: 15,
+        overflow: "hidden",
+        elevation: 4,
+      },
+      image: {
+        width: "100%",
+        height: 120,
+      },
+      ratingContainer: {
+        position: "absolute",
+        top: 10,
+        left: 10,
+        flexDirection: "row",
+        alignItems: "center",
+      },
+      ratingText: {
+        color: "white",
+        fontWeight: "bold",
+        marginLeft: 4,
+      },
+      heartIcon: {
+        position: "absolute",
+        top: 10,
+        right: 10,
+        backgroundColor: "rgba(0, 0, 0, 0.4)",
+      },
+      price: {
+        fontSize: 14,
+        fontWeight: "bold",
+        marginTop: 8,
+      },
+      locationContainer: {
+        flexDirection: "row",
+        alignItems: "center",
+        marginTop: 4,
+      },
+      country: {
+        fontSize: 14,
+        color: "gray",
+        marginLeft: 4,
+        overflow: 'hidden', // tương đương overflow-hidden
+        maxHeight: 34, 
+      },
+      services: {
+        fontSize: 14,
+        color: "gray",
+        marginTop: 4,
+      },
 });
 
 export default TravelTour1;

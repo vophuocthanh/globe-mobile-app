@@ -26,6 +26,7 @@ import TourCard from "../pages/home/tour/tourCard/tourCard";
 import FlightCard from "../pages/home/flight/flightCard/flightCard";
 import BannerTour from "../tour/bannerTour/banner-tour";
 import TravelTour1 from "../tour/travel-tour1/travel-tour1";
+import TravelTour2 from "../tour/travel-tour2/travel-tour2";
 
 export default function Tour() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -384,7 +385,7 @@ export default function Tour() {
               />
               Tour hots
             </Button>
-            <TourCard />
+            <TravelTour2 />
           </View>
         </View>
       </View>
