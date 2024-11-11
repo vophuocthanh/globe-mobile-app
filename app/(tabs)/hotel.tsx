@@ -6,7 +6,7 @@ import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { Avatar, Button, Card, Drawer, Searchbar } from "react-native-paper";
 import { BadgeDollarSign, BedDouble, Calendar, CircleHelp, LogOut, Menu, Plane, Ratio, Users } from 'lucide-react-native';
 import { stylesHeader } from "../components/headerCSS";
-import { router } from "expo-router";
+import HotelCard from "../hotel/hotelCard";
 
 
 
@@ -19,8 +19,6 @@ export default function Hotel() {
   const [isAvatarOpen, setIsAvatarOpen] = useState(false)
   const [active, setActive] = useState("");
   const [selectedDot, setSelectedDot] = useState('Popular');
-
-
 
   const toggleAvatarDrawerMenu = () => {
     if (isAvatarOpen) {
@@ -136,50 +134,12 @@ export default function Hotel() {
     switch (true) {
       case value === 'Popular' || selectedDot === 'Popular':
         return (
-          <View style={styles.cardContainer}>
-            {cardData.length > 0 ? (
-              cardData.map((card) => (
-                <Card key={card.id} style={styles.card} onPress={() => router.push("/hotel/hotelDetail")}>
-                  <Card.Cover source={card.image} style={styles.cardImage} />
-                  <Text style={styles.star}>
-                    <Icon name="star" color="#FF9680" />
-                    4.8
-                  </Text>
-                  <Card.Content>
-                    <TouchableOpacity
-                      style={[
-                        styles.heart,
-                        {
-                          backgroundColor: liked.has(card.id)
-                            ? "#FF9680"
-                            : "rgba(135, 206, 250, 0.5)",
-                        },
-                      ]}
-                      onPress={() => handleHeartPress(card.id)}
-                    >
-                      <Icon
-                        name="heart"
-                        color={liked.has(card.id) ? "#FFF" : "#FF9680"}
-                      />
-                    </TouchableOpacity>
-                    <View style={styles.cardContent}>
-                      <Text style={styles.city}>{card.city}</Text>
-                      <Text style={styles.country}>
-                        <Icon name="map-marker-outline" size={14} color="#FF9680" />
-                        {card.country}
-                      </Text>
-                      <Text style={styles.tour}>{card.tour}</Text>
-                    </View>
-                  </Card.Content>
-                </Card>
-              ))
-            ) : (
-              <Text style={styles.contentText}>No cards available.</Text>
-            )}
-          </View>
+          <HotelCard page={1} itemsPerPage={4} />
         );
       case value === 'Lake' || selectedDot === 'Lake':
-        return <Text style={styles.contentText}>Nội dung hồ</Text>;
+        return (
+          <HotelCard page={2} itemsPerPage={4} />
+        );
       case value === 'Beach' || selectedDot === 'Beach':
         return <Text style={styles.contentText}>Nội dung bãi biển</Text>;
       case value === 'Mountain' || selectedDot === 'Mountain':
@@ -587,12 +547,12 @@ const styles = StyleSheet.create({
     paddingTop: 8,
   },
   iconButton: {
-    flexDirection: 'row',          // Sắp xếp các phần tử theo hàng ngang
-    alignItems: 'center',          // Căn giữa theo chiều dọc
-    shadowColor: '#000',           // Màu đổ bóng
-    shadowOpacity: 0.2,            // Độ mờ của đổ bóng
-    shadowRadius: 2,               // Kích thước của đổ bóng
-    elevation: 3,                  // Độ nổi cho Android
+    flexDirection: 'row',
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOpacity: 0.2,
+    shadowRadius: 2,
+    elevation: 3,
   },
 
   cardContent: {
