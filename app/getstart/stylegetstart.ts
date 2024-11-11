@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
         backgroundColor: "#fff"
     },
     getContainer: {
-        marginTop: 40
+        marginBottom: 400
     },
     title: {
         marginBottom: 17,

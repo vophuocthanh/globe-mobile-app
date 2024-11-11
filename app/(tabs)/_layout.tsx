@@ -1,6 +1,7 @@
 import { Tabs } from "expo-router";
 import React from "react";
 import { TabBar } from "../components/TabBar";
+import queryClient from "@/QueryClient";
 export default function _layout() {
   return (
     <Tabs tabBar={(props) => <TabBar {...props} />}>
