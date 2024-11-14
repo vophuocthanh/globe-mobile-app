@@ -18,7 +18,7 @@ import {
   StyleSheet,
   ScrollView,
 } from "react-native";
-import { Avatar, Searchbar, Drawer, Button,  } from "react-native-paper";
+import { Avatar, Searchbar, Drawer, Button } from "react-native-paper";
 import stylesHeader from "../header/header";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
@@ -138,7 +138,7 @@ const Flight: React.FC = () => {
 
         {/* Drawer for Avatar */}
         {isAvatarDrawerOpen && (
-          <Drawer.Section style={stylesHeader.avatarDrawer}>
+          <Drawer.Section style={styles.avatarDrawer}>
             <View>
               <Drawer.Item
                 label="LogOut"
@@ -169,7 +169,13 @@ const Flight: React.FC = () => {
           </Drawer.Section>
         )}
         <View>
-          <View style={{ marginHorizontal: 16, position: "relative",marginTop:15 }}>
+          <View
+            style={{
+              marginHorizontal: 16,
+              position: "relative",
+              marginTop: 15,
+            }}
+          >
             <Searchbar
               onChangeText={setSearchQuery}
               value={searchQuery}
@@ -490,6 +496,16 @@ const styles = StyleSheet.create({
     fontSize: 17,
     fontWeight: "bold",
     paddingBottom: 30,
+  },
+  avatarDrawer: {
+    position: "absolute",
+    top: 50,
+    right: 10,
+    width: "65%",
+    backgroundColor: "#D9D9D9",
+    zIndex: 1000,
+    borderRadius: 20,
+    height: 160,
   },
 });
 

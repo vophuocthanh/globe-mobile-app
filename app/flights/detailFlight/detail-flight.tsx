@@ -1,23 +1,89 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { View, Image, StyleSheet, Text, ScrollView } from "react-native";
 import HeaderFlights from "../headerFlight/header";
 import { Button, Checkbox } from "react-native-paper";
-import {
-  FileKey,
-  Plane,
-  RockingChair,
-  Star,
-  Utensils,
-  Wifi,
-} from "lucide-react-native";
+
+import { useLocalSearchParams } from "expo-router";
+import axios from "axios";
+import { Clock, DollarSign, MapPin, Plane } from "lucide-react-native";
+
+interface Ticket {
+  id: string;
+  type_ticket: "ECONOMY" | "BUSINESS" | "FIRST_CLASS";
+  price: number;
+  baggage_weight: string;
+  baggage_price: number;
+  flightId: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+interface FLightDetail {
+  id: string;
+  brand: string;
+  price: number;
+  start_time: string;
+  start_day: string;
+  end_day: string;
+  end_time: string;
+  trip_time: string;
+  take_place: string;
+  destination: string;
+  trip_to: string;
+  createAt: string;
+  updateAt: string;
+  userId: string | null;
+  image: string;
+  number_of_seats_remaining: number;
+  type_ticket: "ECONOMY" | "BUSINESS" | "FIRST_CLASS";
+  baggage_weight: string;
+  Ticket: Ticket[];
+}
 
 export default function DetailFlight() {
   const [selectedClass, setSelectedClass] = useState<string>("");
-
+  const [flightDetail, setFlightDetail] = useState<FLightDetail | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
   const handleCheckboxChange = (classType: string) => {
     setSelectedClass(classType);
+    console.log("Bạn đã chọn loại vé:", classType);
+  };
+  const { id } = useLocalSearchParams();
+
+  const price = flightDetail?.price ?? 0;
+
+  const formattedPrice = new Intl.NumberFormat("vi-VN", {
+    style: "currency",
+    currency: "VND",
+  }).format(price);
+
+  const fetchFlighgtDetail = async () => {
+    try {
+      const response = await axios.get(
+        `http://192.168.1.32:3001/api/flight-crawl/crawl/${id}`
+      );
+      setFlightDetail(response?.data);
+      setLoading(false);
+    } catch (error) {
+      console.error("Lỗi khi lấy dữ liệu chi tiết:", error);
+      setLoading(false);
+    } finally {
+      setLoading(false);
+    }
   };
 
+  useEffect(() => {
+    if (id) {
+      fetchFlighgtDetail();
+    }
+  }, [id]);
+  if (loading) {
+    return <Text>Loading...</Text>;
+  }
+
+  if (!flightDetail) {
+    return <Text>No data found</Text>;
+  }
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <HeaderFlights />
@@ -25,64 +91,31 @@ export default function DetailFlight() {
         source={require("@/assets/images/flight-detail-banner.png")}
         style={styles.headerImage}
       />
+      <View style={styles.infoContainer}>
+        <MapPin style={styles.icon} color="black" size={24} />
+        <Text style={styles.infoText}>{flightDetail?.take_place}</Text>
+      </View>
+      <View style={styles.infoContainer}>
+        <Plane style={styles.icon} color="black" size={24} />
+        <Text style={styles.infoText}>{flightDetail?.destination}</Text>
+      </View>
       <View style={styles.imagesld}>
         <Image
           source={require("@/assets/images/caray.png")}
           style={styles.img}
         />
-        <Image
-          source={require("@/assets/images/quatar.png")}
-          style={styles.img}
-        />
-        <Image
-          source={require("@/assets/images/conrad.png")}
-          style={styles.img}
-        />
       </View>
-      <Text style={styles.h1}>Emirates Airlines</Text>
-      <Text style={styles.b1}>Basic Economy Features</Text>
-      <View style={styles.checkboxContainer}>
-        <View style={styles.checkbox}>
-          <Checkbox
-            status={selectedClass === "economy" ? "checked" : "unchecked"}
-            onPress={() => handleCheckboxChange("economy")}
-          />
-          <Text style={styles.label}>Economy Class</Text>
-        </View>
-        <View style={styles.checkbox}>
-          <Checkbox
-            status={selectedClass === "firstClass" ? "checked" : "unchecked"}
-            onPress={() => handleCheckboxChange("firstClass")}
-          />
-          <Text style={styles.label}>First Class</Text>
-        </View>
-        <View style={styles.checkbox}>
-          <Checkbox
-            status={selectedClass === "business" ? "checked" : "unchecked"}
-            onPress={() => handleCheckboxChange("business")}
-          />
-          <Text style={styles.label}>Business Class</Text>
-        </View>
+      
+      <View style={styles.infoContainer}>
+        <DollarSign style={styles.icon} color="black" size={24} />
+        <Text style={styles.infoText}>Price: {formattedPrice}</Text>
       </View>
-
-      <View style={styles.policyContainer}>
-        <Text style={styles.tt}>Emirates Airlines Policies</Text>
-        <View style={styles.policyItem}>
-          <Star style={styles.starIcon} />
-          <Text style={styles.policyText}>
-            Pre-flight cleaning, installation of cabin HEPA filters.
-          </Text>
-        </View>
-        <View style={styles.policyItem}>
-          <Star style={styles.starIcon} />
-          <Text style={styles.policyText}>
-            Pre-flight health screening questions.
-          </Text>
-        </View>
+      <View style={styles.infoContainer}>
+        <Clock style={styles.icon} color="black" size={24} />
+        <Text style={styles.infoText}>
+          Trip time: {flightDetail?.trip_time}
+        </Text>
       </View>
-
-      <Text>Return Wed, Dec 8</Text>
-      <Text>2h 28m</Text>
 
       <View style={styles.containerImage}>
         <Image
@@ -90,31 +123,34 @@ export default function DetailFlight() {
           style={styles.image2}
         />
         <View style={styles.textContainer2}>
-          <Text style={styles.text1}>Emirates</Text>
-          <Text style={styles.text2}>Airbus A320</Text>
+          <Text style={styles.text1}>{flightDetail?.brand}</Text>
+          <Text style={styles.text2}>{flightDetail?.type_ticket}</Text>
         </View>
       </View>
-
-      <View style={styles.iconContainer}>
-        <Plane color="black" />
-        <Wifi color="black" />
-        <FileKey color="black" />
-        <Utensils color="black" />
-        <RockingChair color="black" />
+      <View style={styles.checkboxContainer}>
+        {flightDetail?.Ticket?.map((ticket) => (
+          <View style={styles.checkbox} key={ticket.id}>
+            <Checkbox
+              status={
+                selectedClass === ticket.type_ticket ? "checked" : "unchecked"
+              }
+              onPress={() => handleCheckboxChange(ticket.type_ticket)}
+            />
+            <Text style={styles.label}>{ticket.type_ticket}</Text>
+          </View>
+        ))}
       </View>
-
       <View style={styles.container3}>
         <View style={styles.column}>
-          <Text style={styles.timeText}>12h pm</Text>
-          <Text style={styles.locationText}>Newark</Text>
+          <Text style={styles.timeText}>{flightDetail?.start_time} h</Text>
+          <Text style={styles.locationText}>{flightDetail?.destination}</Text>
         </View>
         <Plane color="black" style={styles.icon} />
         <View style={styles.column}>
-          <Text style={styles.timeText}>12h pm</Text>
-          <Text style={styles.locationText}>Newark</Text>
+          <Text style={styles.timeText}>{flightDetail?.end_time} h</Text>
+          <Text style={styles.locationText}>{flightDetail?.take_place}</Text>
         </View>
       </View>
-
       <View style={styles.btn}>
         <Button mode="contained" style={styles.bookButton}>
           Book Tour
@@ -126,10 +162,16 @@ export default function DetailFlight() {
 
 const styles = StyleSheet.create({
   container: {
-    flexGrow: 1, // Cho phép ScrollView lấp đầy không gian
+    flexGrow: 1,
     paddingBottom: 200,
     paddingHorizontal: 30,
     marginTop: 50,
+  },
+  ticketItem: {
+    marginVertical: 10,
+    padding: 10,
+    backgroundColor: "#f0f0f0",
+    borderRadius: 5,
   },
   headerImage: {
     width: "100%",
@@ -137,19 +179,35 @@ const styles = StyleSheet.create({
     resizeMode: "cover",
     height: 150,
   },
+  infoContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginVertical: 10,
+    justifyContent: "center",
+  },
+  icon: {
+    color: "black",
+    width: 24,
+    height: 24,
+  },
+  infoText: {
+    fontSize: 13,
+    fontWeight: "bold",
+    color: "#333",
+  },
   img: {
-    position: "absolute", // Đặt các ảnh chồng lên nhau
-    top: 0, // Căn chỉnh vị trí ảnh theo ý muốn
-    left: 0, // Căn chỉnh vị trí ảnh theo ý muốn
-    width: "100%", // Đảm bảo ảnh chiếm toàn bộ chiều rộng container
-    height: "100%", // Đảm bảo ảnh chiếm toàn bộ chiều cao container
+    position: "absolute",
+    top: 0,
+    left: 0,
+    width: "100%",
+    height: "100%",
     resizeMode: "contain",
   },
   h1: {
-    fontSize: 20,
+    fontSize: 10,
   },
   b1: {
-    fontSize: 20,
+    fontSize: 10,
     fontWeight: "bold",
   },
   imagesld: {
@@ -276,10 +334,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   locationText: {
-    fontSize: 14,
+    fontSize: 10,
     color: "gray",
-  },
-  icon: {
-    marginHorizontal: 10,
   },
 });
