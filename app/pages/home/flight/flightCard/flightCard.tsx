@@ -35,7 +35,7 @@ const FlightCard: React.FC = () => {
     const fetchFlightData = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:3001/api/flight-crawl/crawl"
+          "http://192.168.1.32:3001/api/flight-crawl/crawl"
         );
         setFlights(response.data.data);
         setLoading(false);
@@ -97,7 +97,9 @@ const FlightCard: React.FC = () => {
               <TouchableOpacity
                 key={card.id}
                 onPress={() =>
-                  router.push("/flights/detailFlight/detail-flight")
+                  router.push(
+                    `/flights/detailFlight/detail-flight?id=${card.id}`
+                  )
                 }
               >
                 <Card style={styles.card}>

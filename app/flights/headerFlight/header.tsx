@@ -13,7 +13,7 @@ export default function HeaderFlights() {
   };
 
   const toggleAvatarDrawer = () => {
-    setIsAvatarDrawerOpen(!isAvatarDrawerOpen);
+    setIsAvatarDrawerOpen((prevState) => !prevState);
   };
 
   return (
@@ -37,35 +37,31 @@ export default function HeaderFlights() {
 
       {/* Drawer for Avatar */}
       {isAvatarDrawerOpen && (
-        <View style={[styles.overlay, StyleSheet.absoluteFill]}>
-          <Drawer.Section style={styles.avatarDrawer}>
-            <View>
-              <Drawer.Item
-                label="LogOut"
-                active={active === "LogOut"}
-                onPress={() => setActive("LogOut")}
-                style={[
-                  styles.drawerItem,
-                  active === "LogOut" ? styles.activeItem : styles.inactiveItem,
-                ]}
-              />
-              <LogOut size={16} color="black" style={styles.LogOut} />
-            </View>
-            <View>
-              <Drawer.Item
-                label="Password"
-                active={active === "Password"}
-                onPress={() => setActive("Password")}
-                style={[
-                  styles.drawerItem,
-                  active === "Password"
-                    ? styles.activeItem
-                    : styles.inactiveItem,
-                ]}
-              />
-            </View>
-          </Drawer.Section>
-        </View>
+        <Drawer.Section style={styles.avatarDrawer}>
+          <View>
+            <Drawer.Item
+              label="Log Out"
+              active={active === "LogOut"}
+              onPress={() => setActive("LogOut")}
+              style={[
+                styles.drawerItem,
+                active === "LogOut" ? styles.activeItem : styles.inactiveItem,
+              ]}
+            />
+            <LogOut size={16} color="black" style={styles.LogOut} />
+          </View>
+          <View>
+            <Drawer.Item
+              label="Password"
+              active={active === "Password"}
+              onPress={() => setActive("Password")}
+              style={[
+                styles.drawerItem,
+                active === "Password" ? styles.activeItem : styles.inactiveItem,
+              ]}
+            />
+          </View>
+        </Drawer.Section>
       )}
     </View>
   );
@@ -74,8 +70,8 @@ export default function HeaderFlights() {
 const styles = StyleSheet.create({
   container: {
     marginTop: 10,
-    marginLeft: 8,
-    marginRight: 8,
+    marginLeft: 4,
+    marginRight: 4,
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
@@ -93,6 +89,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
     borderWidth: 1,
     borderColor: "black",
+    width: 175,
   },
 
   activeItem: {
@@ -118,10 +115,11 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: 50,
     right: 10,
-    width: "55%",
+    width: "65%",
     backgroundColor: "#D9D9D9",
     zIndex: 1000,
     borderRadius: 20,
+    height: 160,
   },
   overlay: {
     position: "absolute",
