@@ -46,7 +46,7 @@ const TravelTour1: React.FC = () => {
         const fetchFlightData = async () => {
         try {
             const response = await axios.get(
-            "http://192.168.1.28:3001/api/tour"
+            "http://192.168.1.14:3001/api/tour"
             );
             setTourss(response.data.data);
             setLoading(false);
@@ -61,7 +61,7 @@ const TravelTour1: React.FC = () => {
     if (loading) {
         return <ActivityIndicator size="large" color="#FF9680" />;
     }
-    console.log(tours,"123");
+
     
     
 
@@ -76,7 +76,7 @@ const TravelTour1: React.FC = () => {
         flatListRef.current?.scrollToIndex({ index });
         setCurrentPage(index);
     };
-    console.log(pages,"pa");
+
 
 return (
     <View style={styles.container}>
@@ -90,7 +90,7 @@ return (
             renderItem={({ item }) => (
             <View style={styles.pageContainer}>
                 {item.map((card: CardData) => (
-                    <TouchableOpacity onPress={()=> router.push('/tour/detail-tour/detail-tour')}>
+                    <TouchableOpacity onPress={()=> router.push(`/tour/detail-tour/detail-tour?id=${card.id}`)}>
                         <Card style={styles.card}>
                             <Image source={{ uri: card.image }} style={styles.image} />
                             <View style={styles.ratingContainer}>
