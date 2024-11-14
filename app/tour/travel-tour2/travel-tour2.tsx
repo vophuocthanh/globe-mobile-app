@@ -39,7 +39,7 @@ const TravelTour2: React.FC = () => {
         const fetchFlightData = async () => {
         try {
             const response = await axios.get(
-            "http://192.168.1.28:3001/api/tour"
+            "http://192.168.1.14:3001/api/tour"
             );
             setTourss(response.data.data);
             setLoading(false);
@@ -54,7 +54,6 @@ const TravelTour2: React.FC = () => {
     if (loading) {
         return <ActivityIndicator size="large" color="#FF9680" />;
     }
-    console.log(tours,"123");
     const handleHeartPress = (id: number) => {
         setLiked((prevLiked) => {
         const newLiked = new Set(prevLiked);

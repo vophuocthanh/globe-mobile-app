@@ -1,11 +1,66 @@
-import React from 'react';
-import { View, ScrollView, Image, StyleSheet, Text } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, ScrollView, Image, StyleSheet, Text, ActivityIndicator } from 'react-native';
 import { Avatar, Button, IconButton, Card, Paragraph } from 'react-native-paper';
 import { MaterialIcons } from '@expo/vector-icons';
 import AvatarTour from '../avatar/avatar';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import axios from 'axios';
+import moment from "moment";
+import { useLocalSearchParams, useRouter } from 'expo-router';
+interface CardData {
+    id: number;
+    image: any;
+    name: string,
+    title: string,
+    country: string,
+    rating: number,
+    price: number,
+    start_date: string,
+    end_date:string,
+    trip_schedules:[
+        {
+        id: string,
+        day: number,
+        schedule: string,
+        date: string
+        }
+    ],
+}
+
 
 export default function DetailTour() {
+    const { id } = useLocalSearchParams();
+    console.log(id,"id123");
+    
+    const [tourDetail, setTourDetail] = useState<CardData | null>(null);
+    const [loading, setLoading] = useState<boolean>(true);
+    
+    const fetchTourDetail = async () => {
+        try {
+            const response = await axios.get(`http://192.168.1.14:3001/api/tour/${id}`);
+            setTourDetail(response.data);
+            setLoading(false);
+        } catch (error) {
+            console.error("Lỗi khi lấy dữ liệu chi tiết:", error);
+            setLoading(false);
+        } finally {
+            setLoading(false);
+        }
+    };
+    
+    
+
+    // Call API khi component được mount
+    useEffect(() => {
+        if (id) {
+            fetchTourDetail();
+        }
+    }, [id]);
+
+    if (loading) {
+        return ;
+    }
+    const sortedSchedules = tourDetail?.trip_schedules.sort((a, b) => a.day - b.day);
 return (
     <SafeAreaView>
         <ScrollView contentContainerStyle={styles.container}>
@@ -13,29 +68,28 @@ return (
             <View style={styles.headerAvatar}>
                 <AvatarTour />
             </View>
-            <Image
-                source={require("@/assets/images/generated-1.png")}
-                style={styles.headerImage}
-            />
+            <Image source={{ uri: tourDetail?.image }} style={styles.headerImage} />
+
 
             {/* Tour Info */}
             <View style={styles.infoContainer}>
                 <View style={styles.locationContainer}>
-                <Text style={styles.locationTitle}>Nusa Pedina</Text>
+                <Text style={styles.locationTitle}>{tourDetail?.name}</Text>
                 <IconButton icon="heart-outline"  size={24} />
                 
                 </View>
 
-                <Text style={styles.locationSubTitle}>Bali, Indonesia</Text>
+                {/* <Text style={styles.locationSubTitle}>{tourDetail?.name}</Text> */}
 
-                <Text style={styles.price}>$224</Text>
-                <Text style={styles.date}>06 July - 09 July</Text>
+                <Text style={styles.price}>Price: {
+                                    new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(tourDetail?.price)}</Text>
+                <Text style={styles.date}>{moment(tourDetail?.start_date).format('DD/MM/YYYY') } - {moment(tourDetail?.end_date).format('DD/MM/YYYY') }</Text>
 
                 {/* Ratings */}
                 <View style={styles.ratingContainer}>
                 <View style={styles.rating}>
                     <MaterialIcons name="star" size={16} color="orange" />
-                    <Text>4.5</Text>
+                    <Text>{tourDetail?.rating}</Text>
                 </View>
                 <View style={styles.rating}>
                     <MaterialIcons name="group" size={16} color="gray" />
@@ -60,15 +114,17 @@ return (
                 </Card>
 
                 {/* Time Line */}
-                <Text style={styles.timelineTitle}>Time Line</Text>
-                <View style={styles.timeline}>
-                <Text>DAY 1</Text>
-                <Paragraph>Transfer from Bali to Nusa Penida ransfer from Bali to Nusa Penida ransfer from Bali to Nusa Penidaransfer from Bali to Nusa Penidaransfer from Bali to Nusa Penida ransfer from  Visit Goa Giri Putri TempleVisit Goa Giri Putri TempleVisit Goa Giri Putri TemplevBali to Nusa Penida...</Paragraph>
-                <Text>DAY 2</Text>
-                <Paragraph>Explore Atuh Beach and Diamond Beach Explore Atuh Beach and Diamond Beach Explore Atuh Beach and Diamond BeachExplore Atuh Beach and Diamond BeachExplore Atuh Beach and Diamond BeachExplore Atuh Beach and Diamond BeachExplore Atuh Beach and Diamond Beach Explore Atuh Beach and Diamond BeachExplore Atuh Beach and Diamond BeachExplore Atuh Beach and Diamond Beach...</Paragraph>
-                <Text>DAY 3</Text>
-                <Paragraph> Visit Goa Giri Putri TempleVisit Goa Giri Putri TempleVisit Goa Giri Putri TempleVisit Goa Giri Putri TempleVisit Goa Giri Putri Temple Visit Goa Giri Putri Temple Visit Goa Giri PutVisit Goa Giri Putri TempleVisit Goa Giri Putri Templev Visit Goa Giri Putri Templeri TempleVisit Goa Gi Visit Goa Giri Putri Templeri Putri Temple Visit Goa Giri Putri Temple Visit Goa Giri Putri Temple ...</Paragraph>
-                </View>
+                <Text style={styles.timelineTitle}>Lịch Trình</Text>
+                {
+                    sortedSchedules?.map((item) => (
+                        <View style={styles.timeline}>
+                
+                            <Text>DAY {item.day}</Text>
+                            <Paragraph>{item.schedule}</Paragraph>
+                        </View>
+                        
+                    ))
+                }
 
                 {/* Book Button */}
                 <Button mode="contained" style={styles.bookButton}>
@@ -102,6 +158,7 @@ locationContainer: {
     justifyContent: 'space-between',
 },
 locationTitle: {
+    width:'80%',
     fontSize: 24,
     fontWeight: 'bold',
 },
