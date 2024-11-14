@@ -30,7 +30,8 @@ const Flight: React.FC = () => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [isAvatarDrawerOpen, setIsAvatarDrawerOpen] = useState(false);
   const [active, setActive] = useState("");
-
+  const [isPopularSelected, setIsPopularSelected] = useState(false);
+  const [isTourSelected, setIsTourSelected] = useState(false);
   const toggleDrawer = () => {
     setIsDrawerOpen(!isDrawerOpen);
   };
@@ -44,10 +45,23 @@ const Flight: React.FC = () => {
   const toggleInfoVisibility = () => {
     setIsInfoVisible(!isInfoVisible);
   };
-  const [selected, setSelected] = useState(false);
+  // const [selected, setSelected] = useState(false);
 
-  const handlePress = () => {
-    setSelected(!selected);
+  // const handlePress = () => {
+  //   setSelected(!selected);
+  // };
+  const handlePopularPress = () => {
+    setIsPopularSelected(!isPopularSelected);
+    if (isTourSelected) {
+      setIsTourSelected(false); // Bỏ chọn Tour nếu Popular được chọn
+    }
+  };
+
+  const handleTourPress = () => {
+    setIsTourSelected(!isTourSelected);
+    if (isPopularSelected) {
+      setIsPopularSelected(false); // Bỏ chọn Popular nếu Tour được chọn
+    }
   };
 
   return (
@@ -344,13 +358,13 @@ const Flight: React.FC = () => {
 
           <View>
             <Button
-              mode={selected ? "contained" : "outlined"}
-              onPress={handlePress}
+              mode={isPopularSelected ? "contained" : "outlined"}
+              onPress={handlePopularPress}
               style={[
                 styles.button,
                 {
-                  backgroundColor: selected ? "#FF5733" : "#FFF",
-                  borderWidth: selected ? 0 : 1,
+                  backgroundColor: isPopularSelected ? "#FF5733" : "#FFF",
+                  borderWidth: isPopularSelected ? 0 : 1,
                   width: 100,
                   height: 50,
                   display: "flex",
@@ -365,7 +379,7 @@ const Flight: React.FC = () => {
                   marginTop: 25,
                   width: 90,
                   height: 40,
-                  color: selected ? "#FFF" : "#000",
+                  color: isPopularSelected ? "#FFF" : "#000",
                   fontSize: 14, // Thay đổi kích thước chữ tại đây
                 },
               ]}
@@ -373,7 +387,7 @@ const Flight: React.FC = () => {
               <Icon
                 name={"fire"}
                 size={20}
-                color={selected ? "#FFF" : "#FF5733"}
+                color={isPopularSelected ? "#FFF" : "#FF5733"}
                 style={styles.icon}
               />
               Popular
@@ -383,13 +397,13 @@ const Flight: React.FC = () => {
 
           <View>
             <Button
-              mode={selected ? "contained" : "outlined"}
-              onPress={handlePress}
+              mode={isTourSelected ? "contained" : "outlined"}
+              onPress={handleTourPress}
               style={[
                 styles.button,
                 {
-                  backgroundColor: selected ? "#FF5733" : "#FFF",
-                  borderWidth: selected ? 0 : 1,
+                  backgroundColor: isTourSelected ? "#FF5733" : "#FFF",
+                  borderWidth: isTourSelected ? 0 : 1,
                   width: 100,
                   height: 50,
                   display: "flex",
@@ -404,7 +418,7 @@ const Flight: React.FC = () => {
                   marginTop: 25,
                   width: 90,
                   height: 40,
-                  color: selected ? "#FFF" : "#000",
+                  color: isTourSelected ? "#FFF" : "#000",
                   fontSize: 14,
                 },
               ]}
@@ -412,7 +426,7 @@ const Flight: React.FC = () => {
               <Icon
                 name={"fire"}
                 size={20}
-                color={selected ? "#FFF" : "#FF5733"}
+                color={isTourSelected ? "#FFF" : "#FF5733"}
                 style={styles.icon}
               />
               Tour hots
