@@ -12,6 +12,8 @@
     "**/*.ts",
     "**/*.tsx",
     ".expo/types/**/*.ts",
-    "expo-env.d.ts"
-, "app/getstart/header"  ]
+    "expo-env.d.ts",
+    "app/getstart/header",
+    "nativewind-env.d.ts"
+  ]
 }
