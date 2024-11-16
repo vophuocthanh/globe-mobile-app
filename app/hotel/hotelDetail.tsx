@@ -1,15 +1,31 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { View, Text, TouchableOpacity, ScrollView } from "react-native";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { Avatar, Button, Card, Drawer, Searchbar } from "react-native-paper";
 import { BadgeDollarSign, BedDouble, Calendar, CircleHelp, Heart, LogOut, Menu, Plane, Ratio, Users } from 'lucide-react-native';
-import { stylesHeader } from "../components/headerCSS";
-import { useQuery } from '@tanstack/react-query'
+import { stylesHeader } from "@/app/components/headerCSS";
+import axios from "axios";
+import { RouteProp, useRoute } from "@react-navigation/native";
 
 
+interface CardData {
+    id: string;
+    hotel_names?: string;
+    location?: string;
+    price?: number;
+    score_hotels?: number;
+    number_rating?: number;
+    star_number?: number;
+    description?: string;
+    image?: string;
+    isFavorite?: boolean;
+}
+type RootStackParamList = {
+    Screen: { id: string };
+};
 
 
-export default function hotelDetail() {
+export default function HotelDetail() {
 
     const [searchQuery, setSearchQuery] = useState('');
     const [isInfoVisible, setIsInfoVisible] = useState(false);
@@ -43,7 +59,22 @@ export default function hotelDetail() {
     const toggleInfoVisibility = () => {
         setIsInfoVisible(!isInfoVisible);
     };
-
+    const [Hotels, setHotels] = useState<CardData>();
+    //const [loading, setLoading] = useState<boolean>(true);
+    const route = useRoute<RouteProp<RootStackParamList, 'Screen'>>();
+    const { id } = route.params;
+    useEffect(() => {
+        const fetchHotelData = async () => {
+            try {
+                const response = await axios.get(`http://localhost:3001/api/hotel-crawl/crawl/${id}`);
+                setHotels(response.data);
+            } catch (err) {
+                console.error(err);
+            }
+        };
+        fetchHotelData();
+    }, [id]);
+    console.log(id)
     return (
         <>
             <ScrollView>
@@ -326,7 +357,6 @@ export default function hotelDetail() {
                         style={{
                             backgroundColor: '#E3E8FD',
                             borderRadius: 15,
-                            overflow: 'hidden',
                             margin: 10,
                             elevation: 4,
                             width: 300,
@@ -335,7 +365,7 @@ export default function hotelDetail() {
                         {/* Image Section */}
                         <View style={{ position: 'relative' }}>
                             <Card.Cover
-                                source={require("../../assets/images/ImageHaNoi.png")}
+                                source={{ uri: Hotels?.image }}
                                 style={{
                                     width: '100%',
                                     height: 180,

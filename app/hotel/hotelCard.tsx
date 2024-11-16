@@ -11,6 +11,8 @@ import { Card } from "react-native-paper";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { router } from "expo-router";
 import axios from "axios";
+import { Link } from "expo-router";
+
 
 interface HotelCardProps {
     page: number;
@@ -32,7 +34,7 @@ interface CardData {
 
 const HotelCard: React.FC<HotelCardProps> = (page, itemsPerPage) => {
     const [liked, setLiked] = useState<Set<string>>(new Set());
-    const [flights, setFlights] = useState<CardData[]>([]);
+    const [Hotels, setHotels] = useState<CardData[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const flatListRef = useRef<FlatList<any>>(null);
 
@@ -45,7 +47,7 @@ const HotelCard: React.FC<HotelCardProps> = (page, itemsPerPage) => {
                         items_per_page: itemsPerPage,
                     },
                 });
-                setFlights(response.data.data);
+                setHotels(response.data.data);
                 setLoading(false);
             } catch (err) {
                 console.error(err);
@@ -79,8 +81,8 @@ const HotelCard: React.FC<HotelCardProps> = (page, itemsPerPage) => {
     };
 
     const pages = [];
-    for (let i = 0; i < flights.length; i += 1) {
-        pages.push(flights.slice(i, i + 1));
+    for (let i = 0; i < Hotels.length; i += 1) {
+        pages.push(Hotels.slice(i, i + 1));
     }
 
 
@@ -104,7 +106,7 @@ const HotelCard: React.FC<HotelCardProps> = (page, itemsPerPage) => {
                                 <Card
                                     key={card.id}
                                     style={styles.card}
-                                    onPress={() => router.push("/hotel/hotelDetail")}
+                                    onPress={() => { router.push(`/hotel/hotelDetail?id=${card.id}`) }}
                                 >
                                     <Card.Cover
                                         source={{ uri: card.image }}
@@ -171,7 +173,6 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.1,
         shadowRadius: 10,
         elevation: 5, // Để tạo hiệu ứng đổ bóng
-        overflow: "hidden", // Đảm bảo bóng không bị vỡ
     },
     cardImage: {
         height: 130,
