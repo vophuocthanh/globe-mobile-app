@@ -1,5 +1,5 @@
 import { Image, Text, TouchableOpacity, View } from "react-native";
-import React, { useState } from 'react'
+import React from 'react'
 import styles from "./stylegetstart";
 import start from "../../assets/images/start.png"
 import { Link } from "expo-router";
