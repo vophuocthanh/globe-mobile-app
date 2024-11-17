@@ -13,31 +13,38 @@ import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { router } from "expo-router";
 import axios from "axios";
 
-// Tạo interface cho dữ liệu chuyến bay
-interface CardData {
+interface CoachData {
   id: string;
-  image: string;
-  flight: string;
-  price: string;
+  brand: string;
+  price: number;
+  number_of_seat: string;
+  start_time: string;
+  start_day: string;
+  end_day: string;
+  end_time: string;
   trip_time: string;
   take_place: string;
   destination: string;
+  location: string;
+  isFavorite: boolean;
+  number_of_seats_remaining: number;
+  image: string;
 }
 
-const FlightCard: React.FC = () => {
+const CoachCard: React.FC = () => {
   const [liked, setLiked] = useState<Set<string>>(new Set());
   const [currentPage, setCurrentPage] = useState(0);
-  const [flights, setFlights] = useState<CardData[]>([]);
+  const [coachs, setCoachs] = useState<CoachData[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const flatListRef = useRef<FlatList<any>>(null);
 
   useEffect(() => {
-    const fetchFlightData = async () => {
+    const fetchCoachData = async () => {
       try {
         const response = await axios.get(
-          "http://192.168.1.5:3001/api/flight-crawl/crawl"
+          "http://192.168.1.5:3001/api/road-vehicle/crawl"
         );
-        setFlights(response.data.data);
+        setCoachs(response.data.data);
         setLoading(false);
       } catch (err) {
         console.error(err);
@@ -45,7 +52,7 @@ const FlightCard: React.FC = () => {
       }
     };
 
-    fetchFlightData();
+    fetchCoachData();
   }, []);
 
   const handleHeartPress = (id: string) => {
@@ -69,8 +76,8 @@ const FlightCard: React.FC = () => {
   };
 
   const pages = [];
-  for (let i = 0; i < flights.length; i += 2) {
-    pages.push(flights.slice(i, i + 2));
+  for (let i = 0; i < coachs.length; i += 2) {
+    pages.push(coachs.slice(i, i + 2));
   }
 
   const handleIndicatorPress = (index: number) => {
@@ -93,13 +100,11 @@ const FlightCard: React.FC = () => {
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
           <View style={styles.pageContainer}>
-            {item.map((card: CardData) => (
+            {item.map((card: CoachData) => (
               <TouchableOpacity
                 key={card.id}
                 onPress={() =>
-                  router.push(
-                    `/flights/detailFlight/detail-flight?id=${card.id}`
-                  )
+                  router.push(`/coach/detailCoach/detail-Coach?id=${card.id}`)
                 }
               >
                 <Card style={styles.card}>
@@ -128,7 +133,11 @@ const FlightCard: React.FC = () => {
                     />
                   </TouchableOpacity>
                   <View style={styles.cardContent}>
-                    <Text style={styles.flight}>{card.take_place}</Text>
+                    <View style={styles.place}>
+                      <Text style={styles.coach}>{card.take_place}</Text>
+                      <Text style={styles.coach}>{card.destination}</Text>
+                    </View>
+
                     <Text style={styles.price}>
                       {formatPriceToVND(card.price)}
                     </Text>
@@ -181,25 +190,38 @@ const styles = StyleSheet.create({
     alignItems: "center",
     width: 150,
     marginRight: 15,
-    height: 250,
+    height: 270,
+  },
+  place: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: 8,
+    paddingHorizontal: 8,
+    width: "100%",
+    position: "absolute",
+    top: 15,
   },
   cardImage: {
-    height: 120,
+    height: 100,
     width: 140,
     marginTop: 4,
     borderRadius: 10,
   },
   cardContent: {
     width: "100%",
-    gap: 8,
-    paddingTop: 4,
+    paddingHorizontal: 8,
+    paddingTop: 8,
+    position: "relative",
+    flex: 1,
+    justifyContent: "flex-end",
   },
   star: {
-    color: "black",
     position: "absolute",
     bottom: 10,
-    right: 7,
-    fontSize: 10,
+    right: 10,
+    color: "black",
+    fontSize: 12,
   },
   heart: {
     backgroundColor: "rgba(135, 206, 250, 0.5)",
@@ -209,22 +231,23 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     position: "absolute",
-    right: 7,
+    right: 10,
     top: 10,
   },
-  flight: {
-    paddingTop: 4,
+  coach: {
     fontSize: 10,
     fontWeight: "bold",
-    paddingBottom: 30,
-    width: "100%",
-    height: 70,
+    color: "#333",
+    width: "48%",
+    textAlign: "center",
   },
   price: {
+    position: "absolute",
+    bottom: 10,
+    left: 10,
     fontSize: 14,
     color: "#FF9680",
-    textAlign: "left",
-    paddingBottom: 20,
+    fontWeight: "bold",
   },
   indicatorContainer: {
     flexDirection: "row",
@@ -241,4 +264,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default FlightCard;
+export default CoachCard;

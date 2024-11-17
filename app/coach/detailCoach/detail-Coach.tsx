@@ -1,24 +1,22 @@
 import React, { useEffect, useState } from "react";
 import { View, Image, StyleSheet, Text, ScrollView } from "react-native";
-import HeaderFlights from "../headerFlight/header";
+
 import { Button, Checkbox } from "react-native-paper";
 
 import { useLocalSearchParams } from "expo-router";
 import axios from "axios";
-import { Clock, DollarSign, MapPin, Plane } from "lucide-react-native";
+import {
+  Bus,
+  Clock,
+  DollarSign,
+  MapPin,
+  MapPinHouse,
+  Plane,
+} from "lucide-react-native";
+import HeaderFlights from "@/app/flights/headerFlight/header";
+import HeaderCoach from "../headerCoach/headerCoach";
 
-interface Ticket {
-  id: string;
-  type_ticket: "ECONOMY" | "BUSINESS" | "FIRST_CLASS";
-  price: number;
-  baggage_weight: string;
-  baggage_price: number;
-  flightId: string;
-  createdAt: string;
-  updatedAt: string;
-}
-
-interface FLightDetail {
+interface CoachDetail {
   id: string;
   brand: string;
   price: number;
@@ -35,34 +33,29 @@ interface FLightDetail {
   userId: string | null;
   image: string;
   number_of_seats_remaining: number;
-  type_ticket: "ECONOMY" | "BUSINESS" | "FIRST_CLASS";
+
   baggage_weight: string;
-  Ticket: Ticket[];
 }
 
 export default function DetailFlight() {
-  const [selectedClass, setSelectedClass] = useState<string>("");
-  const [flightDetail, setFlightDetail] = useState<FLightDetail | null>(null);
+  const [coachDetail, setCoachDetail] = useState<CoachDetail | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
-  const handleCheckboxChange = (classType: string) => {
-    setSelectedClass(classType);
-    console.log("Bạn đã chọn loại vé:", classType);
-  };
+
   const { id } = useLocalSearchParams();
 
-  const price = flightDetail?.price ?? 0;
+  const price = coachDetail?.price ?? 0;
 
   const formattedPrice = new Intl.NumberFormat("vi-VN", {
     style: "currency",
     currency: "VND",
   }).format(price);
 
-  const fetchFlighgtDetail = async () => {
+  const fetchCoachDetail = async () => {
     try {
       const response = await axios.get(
-        `http://192.168.1.5:3001/api/flight-crawl/crawl/${id}`
+        `http://192.168.1.5:3001/api/road-vehicle/crawl/${id}`
       );
-      setFlightDetail(response?.data);
+      setCoachDetail(response?.data);
       setLoading(false);
     } catch (error) {
       console.error("Lỗi khi lấy dữ liệu chi tiết:", error);
@@ -74,34 +67,32 @@ export default function DetailFlight() {
 
   useEffect(() => {
     if (id) {
-      fetchFlighgtDetail();
+      fetchCoachDetail();
     }
   }, [id]);
   if (loading) {
     return <Text>Loading...</Text>;
   }
 
-  if (!flightDetail) {
+  if (!coachDetail) {
     return <Text>No data found</Text>;
   }
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      <HeaderFlights />
-      <Image
-        source={require("@/assets/images/flight-detail-banner.png")}
-        style={styles.headerImage}
-      />
+      <HeaderCoach />
+      <Image source={{ uri: coachDetail.image }} style={styles.headerImage} />
+
       <View style={styles.infoContainer}>
         <MapPin style={styles.icon} color="black" size={24} />
-        <Text style={styles.infoText}>{flightDetail?.take_place}</Text>
+        <Text style={styles.infoText}>{coachDetail?.take_place}</Text>
       </View>
       <View style={styles.infoContainer}>
-        <Plane style={styles.icon} color="black" size={24} />
-        <Text style={styles.infoText}>{flightDetail?.destination}</Text>
+        <Bus style={styles.icon} color="black" size={24} />
+        <Text style={styles.infoText}>{coachDetail?.destination}</Text>
       </View>
       <View style={styles.imagesld}>
         <Image
-          source={require("@/assets/images/caray.png")}
+          source={require("@/assets/images/buss.png")}
           style={styles.img}
         />
       </View>
@@ -112,48 +103,33 @@ export default function DetailFlight() {
       </View>
       <View style={styles.infoContainer}>
         <Clock style={styles.icon} color="black" size={24} />
-        <Text style={styles.infoText}>
-          Trip time: {flightDetail?.trip_time}
-        </Text>
+        <Text style={styles.infoText}>Trip time: {coachDetail?.trip_time}</Text>
       </View>
 
       <View style={styles.containerImage}>
         <Image
-          source={require("@/assets/images/ImageHaNoi.png")}
+          source={require("@/assets/images/bus1.png")}
           style={styles.image2}
         />
         <View style={styles.textContainer2}>
-          <Text style={styles.text1}>{flightDetail?.brand}</Text>
-          <Text style={styles.text2}>{flightDetail?.type_ticket}</Text>
+          <Text style={styles.text1}>{coachDetail?.brand}</Text>
         </View>
       </View>
-      <View style={styles.checkboxContainer}>
-        {flightDetail?.Ticket?.map((ticket) => (
-          <View style={styles.checkbox} key={ticket.id}>
-            <Checkbox
-              status={
-                selectedClass === ticket.type_ticket ? "checked" : "unchecked"
-              }
-              onPress={() => handleCheckboxChange(ticket.type_ticket)}
-            />
-            <Text style={styles.label}>{ticket.type_ticket}</Text>
-          </View>
-        ))}
-      </View>
+
       <View style={styles.container3}>
         <View style={styles.column}>
-          <Text style={styles.timeText}>{flightDetail?.start_time} h</Text>
-          <Text style={styles.locationText}>{flightDetail?.destination}</Text>
+          <Text style={styles.timeText}>{coachDetail?.start_time} h</Text>
+          <Text style={styles.locationText}>{coachDetail?.destination}</Text>
         </View>
-        <Plane color="black" style={styles.icon} />
+        <MapPinHouse color="black" style={styles.icon} />
         <View style={styles.column}>
-          <Text style={styles.timeText}>{flightDetail?.end_time} h</Text>
-          <Text style={styles.locationText}>{flightDetail?.take_place}</Text>
+          <Text style={styles.timeText}>{coachDetail?.end_time} h</Text>
+          <Text style={styles.locationText}>{coachDetail?.take_place}</Text>
         </View>
       </View>
       <View style={styles.btn}>
         <Button mode="contained" style={styles.bookButton}>
-          Book Flight
+          Book Coach
         </Button>
       </View>
     </ScrollView>
@@ -184,6 +160,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginVertical: 10,
     justifyContent: "center",
+    width: "98%",
+    gap: 3,
+    padding: 10,
   },
   icon: {
     color: "black",
