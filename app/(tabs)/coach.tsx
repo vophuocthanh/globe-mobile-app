@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useRouter } from "expo-router";
 import {
   BadgeDollarSign,
   BedDouble,
@@ -11,21 +11,21 @@ import {
   TextSearch,
   Users,
 } from "lucide-react-native";
+import React, { useState } from "react";
 import {
-  View,
+  ScrollView,
   Text,
   TouchableOpacity,
+  View,
   StyleSheet,
-  ScrollView,
 } from "react-native";
-import { Avatar, Searchbar, Drawer, Button } from "react-native-paper";
+import { Avatar, Searchbar, Button, Drawer } from "react-native-paper";
 import stylesHeader from "../header/header";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
-
 import TourCard from "../pages/home/tour/tourCard/tourCard";
-import FlightCard from "../pages/home/flight/flightCard/flightCard";
+import CoachCard from "../pages/home/coach/coachCard/coachCard";
 
-const Flight: React.FC = () => {
+export default function Coach() {
   const [searchQuery, setSearchQuery] = useState("");
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [isAvatarDrawerOpen, setIsAvatarDrawerOpen] = useState(false);
@@ -59,7 +59,6 @@ const Flight: React.FC = () => {
       setIsPopularSelected(false);
     }
   };
-
   return (
     <ScrollView>
       <View style={{ paddingBottom: 200 }}>
@@ -148,7 +147,7 @@ const Flight: React.FC = () => {
 
         {/* Drawer for Avatar */}
         {isAvatarDrawerOpen && (
-          <Drawer.Section style={styles.avatarDrawer}>
+          <Drawer.Section style={stylesHeader.avatarDrawer}>
             <View>
               <Drawer.Item
                 label="LogOut"
@@ -384,11 +383,11 @@ const Flight: React.FC = () => {
                 name={"fire"}
                 size={20}
                 color={isPopularSelected ? "#FFF" : "#FF5733"}
-                style={styles.icon}
+                style={stylesHeader.icon1}
               />
               Popular
             </Button>
-            <FlightCard />
+            <CoachCard />
           </View>
 
           <View>
@@ -433,7 +432,7 @@ const Flight: React.FC = () => {
       </View>
     </ScrollView>
   );
-};
+}
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -518,5 +517,3 @@ const styles = StyleSheet.create({
     height: 160,
   },
 });
-
-export default Flight;

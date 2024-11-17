@@ -30,6 +30,10 @@ export default function _layout() {
         options={{ headerTitle: "flight", tabBarLabel: "flight" }}
       ></Tabs.Screen>
       <Tabs.Screen
+        name="coach"
+        options={{ headerTitle: "coach", tabBarLabel: "coach" }}
+      ></Tabs.Screen>
+      <Tabs.Screen
         name="/hotel/hotelDetail"
         options={{ headerTitle: "Hotel Detail", tabBarLabel: "Hotel Detail" }}
       />
