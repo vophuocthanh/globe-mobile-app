@@ -45,7 +45,7 @@ export default function GetStart() {
 
                     <View style={styles.header}>
                         <Text style={{ fontSize: 20 }}>Already have an account ?</Text>
-                        <Link href='/flight' asChild>
+                        <Link href='/register/register' asChild>
                             <TouchableOpacity>
                                 <Text style={{ fontSize: 20, color: "#00D38A" }} > Sign In</Text>
                             </TouchableOpacity>

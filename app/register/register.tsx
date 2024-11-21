@@ -1,12 +1,16 @@
 import React, { useState } from "react";
 import { Text, TextInput, TouchableOpacity, View } from "react-native";
 import styles from "./styleRegister";
-import { Link } from "expo-router";
+import { Link, useRouter } from "expo-router";
 import { EyeOff, Eye } from "lucide-react-native";
 
 import { Checkbox } from "react-native-paper";
 
 const RegisterPage2: React.FC = () => {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -25,6 +29,38 @@ const RegisterPage2: React.FC = () => {
     setIsChecked(!isChecked);
   };
 
+  const router = useRouter();
+
+
+  const handleRegister = async () => {
+
+    try {
+      const response = await fetch("http://localhost:3001/api/auth/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name,
+          email,
+          phone,
+          password,
+          confirmPassword,
+        }),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        console.log("Registration successful", data);
+        router.push("/register/verifyEmail");
+      } else {
+        const errorData = await response.json();
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Let's Get Started</Text>
@@ -33,8 +69,17 @@ const RegisterPage2: React.FC = () => {
       </Text>
 
       <View style={styles.inputContainer}>
+        <Text style={styles.label}>Your Name</Text>
+        <TextInput value={name} onChangeText={setName}
+          placeholder="john" style={styles.inputEmail} />
+      </View>
+      <View style={styles.inputContainer}>
         <Text style={styles.label}>Email</Text>
-        <TextInput placeholder="john.doe@gmail.com" style={styles.inputEmail} />
+        <TextInput value={email} onChangeText={setEmail} placeholder="john.doe@gmail.com" style={styles.inputEmail} />
+      </View>
+      <View style={styles.inputContainer}>
+        <Text style={styles.label}>Phone Number</Text>
+        <TextInput value={phone} onChangeText={setPhone} placeholder="000000000" style={styles.inputEmail} />
       </View>
 
       {/* Input Password */}
@@ -101,11 +146,10 @@ const RegisterPage2: React.FC = () => {
         </Text>
       </View>
 
-      <Link href="/login" asChild>
-        <TouchableOpacity style={styles.button}>
-          <Text style={styles.buttonText}>Create Account</Text>
-        </TouchableOpacity>
-      </Link>
+      <TouchableOpacity onPress={handleRegister}
+        style={styles.button}>
+        <Text style={styles.buttonText}>Create Account</Text>
+      </TouchableOpacity>
 
       <View>
         <Text style={styles.already}>

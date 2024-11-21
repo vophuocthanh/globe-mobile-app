@@ -18,68 +18,68 @@ import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 const screenWidth = Dimensions.get("window").width;
 
 interface CardData {
-    id: number;
-    image: any;
-    name: string,
-    title: string,
-    country: string,
-    rating: number,
-    price: number,
+  id: number;
+  image: any;
+  name: string,
+  title: string,
+  country: string,
+  rating: number,
+  price: number,
 }
 
 const TravelTour2: React.FC = () => {
-    const [liked, setLiked] = useState<Set<number>>(new Set());
-    const [currentPage, setCurrentPage] = useState(0);
-    const flatListRef = useRef<FlatList<any>>(null);
-    const [tours, setTourss] = useState<CardData[]>([]);
-    const [loading, setLoading] = useState<boolean>(true);
+  const [liked, setLiked] = useState<Set<number>>(new Set());
+  const [currentPage, setCurrentPage] = useState(0);
+  const flatListRef = useRef<FlatList<any>>(null);
+  const [tours, setTourss] = useState<CardData[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
 
-    
-    useEffect(() => {
-        const fetchFlightData = async () => {
-        try {
-            const response = await axios.get(
-            "http://192.168.1.14:3001/api/tour"
-            );
-            setTourss(response.data.data);
-            setLoading(false);
-        } catch (err) {
-            console.error(err);
-            setLoading(false);
-        }
-        };
-    
-        fetchFlightData();
-    }, []);
-    if (loading) {
-        return <ActivityIndicator size="large" color="#FF9680" />;
-    }
-    const handleHeartPress = (id: number) => {
-        setLiked((prevLiked) => {
-        const newLiked = new Set(prevLiked);
-        if (newLiked.has(id)) {
-            newLiked.delete(id);
-        } else {
-            newLiked.add(id);
-        }
-        return newLiked;
-        });
+
+  useEffect(() => {
+    const fetchFlightData = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:3001/api/tour"
+        );
+        setTourss(response.data.data);
+        setLoading(false);
+      } catch (err) {
+        console.error(err);
+        setLoading(false);
+      }
     };
 
-    // Mỗi trang sẽ có 4 thẻ (2 trên, 2 dưới)
-    const pages = [];
-    for (let i = 0; i < tours.length; i += 4) {
-        pages.push(tours.slice(i, i + 4));
-    }
+    fetchFlightData();
+  }, []);
+  if (loading) {
+    return <ActivityIndicator size="large" color="#FF9680" />;
+  }
+  const handleHeartPress = (id: number) => {
+    setLiked((prevLiked) => {
+      const newLiked = new Set(prevLiked);
+      if (newLiked.has(id)) {
+        newLiked.delete(id);
+      } else {
+        newLiked.add(id);
+      }
+      return newLiked;
+    });
+  };
 
-    const handleIndicatorPress = (index: number) => {
-        flatListRef.current?.scrollToIndex({ index });
-        setCurrentPage(index);
-    };
+  // Mỗi trang sẽ có 4 thẻ (2 trên, 2 dưới)
+  const pages = [];
+  for (let i = 0; i < tours.length; i += 4) {
+    pages.push(tours.slice(i, i + 4));
+  }
 
-return (
+  const handleIndicatorPress = (index: number) => {
+    flatListRef.current?.scrollToIndex({ index });
+    setCurrentPage(index);
+  };
+
+  return (
     <View style={styles.container}>
-    <FlatList
+      <FlatList
         ref={flatListRef}
         data={pages}
         horizontal
@@ -87,89 +87,89 @@ return (
         showsHorizontalScrollIndicator={false}
         keyExtractor={(_, index) => index.toString()}
         renderItem={({ item }) => (
-        <View style={styles.pageContainer}>
+          <View style={styles.pageContainer}>
             <View style={styles.rowContainer}>
-            {item.slice(0, 2).map((card: CardData) => (
-                <TouchableOpacity onPress={()=> router.push('/tour/detail-tour/detail-tour')}>
-                <Card style={styles.card}>
+              {item.slice(0, 2).map((card: CardData) => (
+                <TouchableOpacity onPress={() => router.push('/tour/detail-tour/detail-tour')}>
+                  <Card style={styles.card}>
                     <Image source={{ uri: card.image }} style={styles.image} />
                     <View style={styles.ratingContainer}>
-                        <MaterialIcons name="star" size={18} color="red" />
-                        <Text style={styles.ratingText}>{card.rating}</Text>
+                      <MaterialIcons name="star" size={18} color="red" />
+                      <Text style={styles.ratingText}>{card.rating}</Text>
                     </View>
                     <IconButton
-                        icon={() => <Ionicons name="heart-outline" size={20} color="white" />}
-                        style={styles.heartIcon}
+                      icon={() => <Ionicons name="heart-outline" size={20} color="white" />}
+                      style={styles.heartIcon}
                     />
                     <Card.Content>
-                        <View style={styles.locationContainer}>
+                      <View style={styles.locationContainer}>
                         <Ionicons name="location-outline" size={16} color="red" />
                         <Text style={styles.country}>{card.name}</Text>
-                        </View>
-                        <Text style={styles.price}>Price: {
-                            new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(card.price)}</Text>
+                      </View>
+                      <Text style={styles.price}>Price: {
+                        new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(card.price)}</Text>
                     </Card.Content>
-                    </Card>
+                  </Card>
 
-            </TouchableOpacity>
-            ))}
+                </TouchableOpacity>
+              ))}
             </View>
             <View style={styles.rowContainer}>
-            {item.slice(2).map((card: CardData) => (
-                <TouchableOpacity onPress={()=> router.push('/tour/detail-tour/detail-tour')}>
-                <Card style={styles.card}>
+              {item.slice(2).map((card: CardData) => (
+                <TouchableOpacity onPress={() => router.push('/tour/detail-tour/detail-tour')}>
+                  <Card style={styles.card}>
                     <Image source={{ uri: card.image }} style={styles.image} />
                     <View style={styles.ratingContainer}>
-                        <MaterialIcons name="star" size={18} color="red" />
-                        <Text style={styles.ratingText}>{card.rating}</Text>
+                      <MaterialIcons name="star" size={18} color="red" />
+                      <Text style={styles.ratingText}>{card.rating}</Text>
                     </View>
                     <IconButton
-                        icon={() => <Ionicons name="heart-outline" size={20} color="white" />}
-                        style={styles.heartIcon}
+                      icon={() => <Ionicons name="heart-outline" size={20} color="white" />}
+                      style={styles.heartIcon}
                     />
                     <Card.Content>
-                        <View style={styles.locationContainer}>
+                      <View style={styles.locationContainer}>
                         <Ionicons name="location-outline" size={16} color="red" />
                         <Text style={styles.country}>{card.name}</Text>
-                        </View>
-                        <Text style={styles.price}>Price: {
-                            new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(card.price)}</Text>
+                      </View>
+                      <Text style={styles.price}>Price: {
+                        new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(card.price)}</Text>
                     </Card.Content>
-                    </Card>
+                  </Card>
 
-            </TouchableOpacity>
-            ))}
+                </TouchableOpacity>
+              ))}
             </View>
-        </View>
+          </View>
         )}
         contentContainerStyle={styles.cardContainer}
         onScroll={(e) => {
-        const offsetX = e.nativeEvent.contentOffset.x;
-        const pageIndex = Math.round(offsetX / screenWidth);
-        setCurrentPage(pageIndex);
+          const offsetX = e.nativeEvent.contentOffset.x;
+          const pageIndex = Math.round(offsetX / screenWidth);
+          setCurrentPage(pageIndex);
         }}
-    />
+      />
 
-    <View style={styles.indicatorContainer}>
+      <View style={styles.indicatorContainer}>
         {pages.map((_, index) => (
-        <TouchableOpacity
+          <TouchableOpacity
             key={index}
             onPress={() => handleIndicatorPress(index)}
-        >
+          >
             <View
-            style={[
+              style={[
                 styles.indicator,
                 {
-                backgroundColor:
+                  backgroundColor:
                     currentPage === index ? "#FF9680" : "#D3D3D3",
                 },
-            ]}
+              ]}
             />
-        </TouchableOpacity>
+          </TouchableOpacity>
         ))}
+      </View>
     </View>
-    </View>
-);
+  );
 };
 
 const styles = StyleSheet.create({
@@ -280,7 +280,7 @@ const styles = StyleSheet.create({
     color: "gray",
     marginLeft: 4,
     overflow: 'hidden', // tương đương overflow-hidden
-    maxHeight: 34, 
+    maxHeight: 34,
   },
   services: {
     fontSize: 14,

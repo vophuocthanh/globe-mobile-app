@@ -60,7 +60,7 @@ export default function DetailFlight() {
   const fetchFlighgtDetail = async () => {
     try {
       const response = await axios.get(
-        `http://192.168.1.32:3001/api/flight-crawl/crawl/${id}`
+        `http://localhost:3001/api/flight-crawl/crawl/${id}`
       );
       setFlightDetail(response?.data);
       setLoading(false);
@@ -105,7 +105,7 @@ export default function DetailFlight() {
           style={styles.img}
         />
       </View>
-      
+
       <View style={styles.infoContainer}>
         <DollarSign style={styles.icon} color="black" size={24} />
         <Text style={styles.infoText}>Price: {formattedPrice}</Text>

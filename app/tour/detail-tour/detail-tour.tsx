@@ -37,7 +37,7 @@ export default function DetailTour() {
     
     const fetchTourDetail = async () => {
         try {
-            const response = await axios.get(`http://192.168.1.14:3001/api/tour/${id}`);
+            const response = await axios.get(`http://localhost:3001/api/tour/${id}`);
             setTourDetail(response.data);
             setLoading(false);
         } catch (error) {

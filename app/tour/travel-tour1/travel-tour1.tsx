@@ -12,7 +12,7 @@ import {
     ActivityIndicator,
     Image,
 } from "react-native";
-import {  Card, IconButton } from "react-native-paper";
+import { Card, IconButton } from "react-native-paper";
 
 interface CardData {
     id: number;
@@ -33,41 +33,41 @@ const TravelTour1: React.FC = () => {
 
     const handleHeartPress = (id: number) => {
         setLiked((prevLiked) => {
-        const newLiked = new Set(prevLiked);
-        if (newLiked.has(id)) {
-            newLiked.delete(id);
-        } else {
-            newLiked.add(id);
-        }
-        return newLiked;
+            const newLiked = new Set(prevLiked);
+            if (newLiked.has(id)) {
+                newLiked.delete(id);
+            } else {
+                newLiked.add(id);
+            }
+            return newLiked;
         });
     };
     useEffect(() => {
         const fetchFlightData = async () => {
-        try {
-            const response = await axios.get(
-            "http://192.168.1.14:3001/api/tour"
-            );
-            setTourss(response.data.data);
-            setLoading(false);
-        } catch (err) {
-            console.error(err);
-            setLoading(false);
-        }
+            try {
+                const response = await axios.get(
+                    "http://localhost:3001/api/tour"
+                );
+                setTourss(response.data.data);
+                setLoading(false);
+            } catch (err) {
+                console.error(err);
+                setLoading(false);
+            }
         };
-    
+
         fetchFlightData();
     }, []);
     if (loading) {
         return <ActivityIndicator size="large" color="#FF9680" />;
     }
 
-    
-    
+
+
 
 
     const pages = [];
-    
+
     for (let i = 0; i < tours.length; i += 2) {
         pages.push(tours.slice(i, i + 2));
     }
@@ -78,64 +78,64 @@ const TravelTour1: React.FC = () => {
     };
 
 
-return (
-    <View style={styles.container}>
-        <FlatList
-            ref={flatListRef}
-            data={pages}
-            horizontal
-            pagingEnabled
-            showsHorizontalScrollIndicator={false}
-            keyExtractor={(_, index) => index.toString()}
-            renderItem={({ item }) => (
-            <View style={styles.pageContainer}>
-                {item.map((card: CardData) => (
-                    <TouchableOpacity onPress={()=> router.push(`/tour/detail-tour/detail-tour?id=${card.id}`)}>
-                        <Card style={styles.card}>
-                            <Image source={{ uri: card.image }} style={styles.image} />
-                            <View style={styles.ratingContainer}>
-                                <MaterialIcons name="star" size={18} color="red" />
-                                <Text style={styles.ratingText}>{card.rating}</Text>
-                            </View>
-                            <IconButton
-                                icon={() => <Ionicons name="heart-outline" size={20} color="white" />}
-                                style={styles.heartIcon}
-                            />
-                            <Card.Content>
-                                <View style={styles.locationContainer}>
-                                <Ionicons name="location-outline" size={16} color="red" />
-                                <Text style={styles.country}>{card.name}</Text>
-                                </View>
-                                <Text style={styles.price}>Price: {
-                                    new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(card.price)}</Text>
-                            </Card.Content>
-                            </Card>
+    return (
+        <View style={styles.container}>
+            <FlatList
+                ref={flatListRef}
+                data={pages}
+                horizontal
+                pagingEnabled
+                showsHorizontalScrollIndicator={false}
+                keyExtractor={(_, index) => index.toString()}
+                renderItem={({ item }) => (
+                    <View style={styles.pageContainer}>
+                        {item.map((card: CardData) => (
+                            <TouchableOpacity onPress={() => router.push(`/tour/detail-tour/detail-tour?id=${card.id}`)}>
+                                <Card style={styles.card}>
+                                    <Image source={{ uri: card.image }} style={styles.image} />
+                                    <View style={styles.ratingContainer}>
+                                        <MaterialIcons name="star" size={18} color="red" />
+                                        <Text style={styles.ratingText}>{card.rating}</Text>
+                                    </View>
+                                    <IconButton
+                                        icon={() => <Ionicons name="heart-outline" size={20} color="white" />}
+                                        style={styles.heartIcon}
+                                    />
+                                    <Card.Content>
+                                        <View style={styles.locationContainer}>
+                                            <Ionicons name="location-outline" size={16} color="red" />
+                                            <Text style={styles.country}>{card.name}</Text>
+                                        </View>
+                                        <Text style={styles.price}>Price: {
+                                            new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(card.price)}</Text>
+                                    </Card.Content>
+                                </Card>
+                            </TouchableOpacity>
+                        ))}
+                    </View>
+                )}
+                contentContainerStyle={styles.cardContainer}
+            />
+
+            {/* Phần dấu chấm */}
+            <View style={styles.indicatorContainer}>
+                {pages.map((_, index) => (
+                    <TouchableOpacity
+                        key={index}
+                        onPress={() => handleIndicatorPress(index)}
+                    >
+                        <View
+                            style={[
+                                styles.indicator,
+                                {
+                                    backgroundColor:
+                                        currentPage === index ? "#FF9680" : "#D3D3D3",
+                                }, // Active là màu cam
+                            ]}
+                        />
                     </TouchableOpacity>
                 ))}
             </View>
-            )}
-            contentContainerStyle={styles.cardContainer}
-        />
-
-        {/* Phần dấu chấm */}
-        <View style={styles.indicatorContainer}>
-            {pages.map((_, index) => (
-            <TouchableOpacity
-                key={index}
-                onPress={() => handleIndicatorPress(index)}
-            >
-                <View
-                style={[
-                    styles.indicator,
-                    {
-                    backgroundColor:
-                        currentPage === index ? "#FF9680" : "#D3D3D3",
-                    }, // Active là màu cam
-                ]}
-                />
-            </TouchableOpacity>
-            ))}
-        </View>
 
         </View>
     );
@@ -221,51 +221,51 @@ const styles = StyleSheet.create({
         borderRadius: 15,
         overflow: "hidden",
         elevation: 4,
-      },
-      image: {
+    },
+    image: {
         width: "100%",
         height: 120,
-      },
-      ratingContainer: {
+    },
+    ratingContainer: {
         position: "absolute",
         top: 10,
         left: 10,
         flexDirection: "row",
         alignItems: "center",
-      },
-      ratingText: {
+    },
+    ratingText: {
         color: "white",
         fontWeight: "bold",
         marginLeft: 4,
-      },
-      heartIcon: {
+    },
+    heartIcon: {
         position: "absolute",
         top: 10,
         right: 10,
         backgroundColor: "rgba(0, 0, 0, 0.4)",
-      },
-      price: {
+    },
+    price: {
         fontSize: 14,
         fontWeight: "bold",
         marginTop: 8,
-      },
-      locationContainer: {
+    },
+    locationContainer: {
         flexDirection: "row",
         alignItems: "center",
         marginTop: 4,
-      },
-      country: {
+    },
+    country: {
         fontSize: 14,
         color: "gray",
         marginLeft: 4,
         overflow: 'hidden', // tương đương overflow-hidden
-        maxHeight: 34, 
-      },
-      services: {
+        maxHeight: 34,
+    },
+    services: {
         fontSize: 14,
         color: "gray",
         marginTop: 4,
-      },
+    },
 });
 
 export default TravelTour1;
