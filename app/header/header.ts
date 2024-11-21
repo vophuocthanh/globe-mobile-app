@@ -11,6 +11,9 @@ const stylesHeader = StyleSheet.create({
     alignItems: 'center',
     justifyContent:'space-between'
   },
+  icon1: {
+    marginRight: 8,
+  },
   search:{
     width:200,
     height:38,
