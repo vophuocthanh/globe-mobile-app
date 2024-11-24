@@ -14,10 +14,7 @@ import axios from "axios";
 import { Link } from "expo-router";
 
 
-interface HotelCardProps {
-    page: number;
-    itemsPerPage: number;
-}
+
 
 interface CardData {
     id: string;
@@ -31,8 +28,15 @@ interface CardData {
     image?: string;
     isFavorite?: boolean;
 }
+interface HotelCardProps {
+    page: number;
+    itemsPerPage: number;
+    horizontal: boolean;
+    numColumns?: number | 0;
+    star_number?: number
+}
 
-const HotelCard: React.FC<HotelCardProps> = (page, itemsPerPage) => {
+const HotelCard: React.FC<HotelCardProps> = ({ page, itemsPerPage, horizontal, numColumns, star_number }) => {
     const [liked, setLiked] = useState<Set<string>>(new Set());
     const [Hotels, setHotels] = useState<CardData[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
@@ -45,6 +49,7 @@ const HotelCard: React.FC<HotelCardProps> = (page, itemsPerPage) => {
                     params: {
                         page,
                         items_per_page: itemsPerPage,
+                        star_number: star_number
                     },
                 });
                 setHotels(response.data.data);
@@ -55,7 +60,7 @@ const HotelCard: React.FC<HotelCardProps> = (page, itemsPerPage) => {
             }
         };
         fetchHotelData();
-    }, [page, itemsPerPage]);
+    }, [page, itemsPerPage, star_number]);
 
 
 
@@ -90,12 +95,14 @@ const HotelCard: React.FC<HotelCardProps> = (page, itemsPerPage) => {
         return <ActivityIndicator size="large" color="#FF9680" />;
     }
 
+
     return (
         <View style={styles.container}>
             <FlatList
                 ref={flatListRef}
                 data={pages}
-                horizontal
+                numColumns={numColumns}
+                horizontal={horizontal}
                 pagingEnabled
                 showsHorizontalScrollIndicator={false}
                 keyExtractor={(item, index) => `page-${index}`}
@@ -162,21 +169,19 @@ const styles = StyleSheet.create({
         backgroundColor: '#f8f9fa',
     },
     cardContainer: {
+        marginTop: 15
     },
     card: {
         alignItems: "center",
-        width: 170,
+        width: 150,
         marginRight: 15,
         borderRadius: 12, // Các góc của thẻ mềm mại hơn
         backgroundColor: "#fff",
-        shadowColor: "#000",
-        shadowOpacity: 0.1,
-        shadowRadius: 10,
-        elevation: 5, // Để tạo hiệu ứng đổ bóng
+
     },
     cardImage: {
         height: 130,
-        width: 165,
+        width: 140,
         margin: 4,
     },
     cardContent: {

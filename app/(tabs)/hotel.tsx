@@ -134,11 +134,11 @@ export default function Hotel() {
     switch (true) {
       case value === 'Popular' || selectedDot === 'Popular':
         return (
-          <HotelCard page={1} itemsPerPage={4} />
+          <HotelCard horizontal={true} page={1} itemsPerPage={4} />
         );
       case value === 'Lake' || selectedDot === 'Lake':
         return (
-          <HotelCard page={2} itemsPerPage={4} />
+          <HotelCard horizontal={true} page={2} itemsPerPage={4} />
         );
       case value === 'Beach' || selectedDot === 'Beach':
         return <Text style={styles.contentText}>Nội dung bãi biển</Text>;
@@ -444,51 +444,11 @@ export default function Hotel() {
 
           <View>
             <View style={styles.title}>
-              <Text style={styles.text}>Tour hot</Text>
+              <Text style={styles.text}>Hotel hot</Text>
               <Icon name="fire" size={24} color="#FF9680" />
             </View>
-            <View>
-              <View style={styles.cardContainer}>
-                {cardData.length > 0 ? (
-                  cardData.map((card) => (
-                    <Card key={card.id} style={styles.card}>
-                      <Card.Cover source={card.image} style={styles.cardImage} />
-                      <Text style={styles.star}>
-                        <Icon name="star" color="#FF9680" />
-                        4.8
-                      </Text>
-                      <Card.Content>
-                        <TouchableOpacity
-                          style={[
-                            styles.heart,
-                            {
-                              backgroundColor: liked.has(card.id)
-                                ? "#FF9680"
-                                : "rgba(135, 206, 250, 0.5)",
-                            },
-                          ]}
-                          onPress={() => handleHeartPress(card.id)}
-                        >
-                          <Icon
-                            name="heart"
-                            color={liked.has(card.id) ? "#FFF" : "#FF9680"}
-                          />
-                        </TouchableOpacity>
-                        <View style={styles.cardContent}>
-                          <Text style={styles.city}>{card.city}</Text>
-                          <Text style={styles.country}>
-                            <Icon name="map-marker-outline" size={14} color="#FF9680" />
-                            {card.country}
-                          </Text>
-                          <Text style={styles.tour}>{card.tour}</Text>
-                        </View>
-                      </Card.Content>
-                    </Card>
-                  ))
-                ) : (
-                  <Text style={styles.contentText}>No cards available.</Text>
-                )}
-              </View>
+            <View style={styles.card}>
+              <HotelCard horizontal={false} star_number={5} numColumns={2} page={1} itemsPerPage={4} />
             </View>
           </View>
 
@@ -538,7 +498,6 @@ const styles = StyleSheet.create({
   },
   card: {
     alignItems: "center",
-    width: 160,
   },
   cardImage: {
     height: 120,

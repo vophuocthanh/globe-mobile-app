@@ -1,18 +1,15 @@
-import { NavigationProp } from "@react-navigation/native";
-import { Link, router, useNavigation } from "expo-router";
-import React, { useEffect, useState } from "react";
+import { Link, router } from "expo-router";
+import React, { useState } from "react";
 import {
   Alert,
-  Button,
-  Pressable,
-  StyleSheet,
   Text,
   TouchableOpacity,
   View,
 } from "react-native";
 import { Checkbox, TextInput } from "react-native-paper";
-import axios from "axios";
-import authApi from "../apis/auth.api";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+
 import styles from "./style";
 
 export default function Login() {
@@ -21,41 +18,43 @@ export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleLogin = async (email: string, password: string) => {
-    // try {
-    //     const res = await axios.post('http://localhost:3001/api/auth/login', {
-    //         email,
-    //         password,
-    //     });
-    //     console.log(res,"ré");
+  const handleSubmit = async () => {
+    if (!email || !password) {
+      Alert.alert("Error", "Email and password cannot be empty.");
+      return;
+    }
 
-    //     console.log(res.data, "res");
-    // } catch (err) {
-    //     console.error(err, "err");
-    // }
     try {
-      const response = await fetch(`http://localhost:3001/api/auth/login`, {
-        method: "GET",
+      const response = await fetch("http://localhost:3001/api/auth/login", {
+        method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
+        body: JSON.stringify({ email, password }),
       });
-      const jsonResponse = await response.json();
-      console.log(jsonResponse, "123");
 
-      if (response.ok) {
-        Alert.alert("Login Successful", `Welcome, ${jsonResponse.user}!`);
-      } else {
-        Alert.alert(
-          "Login Failed",
-          jsonResponse.message || "Invalid credentials"
-        );
+      // Kiểm tra phản hồi từ server
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || "An error occurred.");
       }
+
+      const data = await response.json();
+
+      await AsyncStorage.setItem("accessToken", data.access_token);
+      await AsyncStorage.setItem("refreshToken", data.refresh_token);
+      await AsyncStorage.setItem("user", JSON.stringify(data.user));
+      router.push("/(tabs)/");
+
+      Alert.alert("Success", "Login successful 🚀");
+
+
     } catch (error) {
-      router.push("/(tabs)");
-      Alert.alert("Error", "Something went wrong. Please try again.");
+
     }
   };
+
+
 
   return (
     <View style={styles.container}>
@@ -106,9 +105,7 @@ export default function Login() {
         </View>
       </View>
       <TouchableOpacity
-        onPress={() => {
-          handleLogin(email, password);
-        }}
+        onPress={handleSubmit}
       >
         <Text style={styles.button}>Login</Text>
       </TouchableOpacity>
