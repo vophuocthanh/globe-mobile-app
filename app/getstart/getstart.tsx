@@ -36,7 +36,7 @@ export default function GetStart() {
                         source={start}
                     />
                     <View style={styles.btn}>
-                        <Link href='/getstart/adventures/adventures' asChild>
+                        <Link href='/login/login' asChild>
                             <TouchableOpacity>
                                 <Text style={{ textAlign: "center" }} >GET STARTED</Text>
                             </TouchableOpacity>
